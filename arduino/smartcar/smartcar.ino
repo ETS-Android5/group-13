@@ -7,7 +7,10 @@ smartcarlib::pins::v2::rightMotorPins);
 DifferentialControl control(leftMotor, rightMotor);
 const int fSpeed = 70;
 const int bSpeed = -70;
- SimpleCar car(control);
+const int lTurn = -10;
+const int rTurn = 10;
+char lastDirection;
+SimpleCar car(control);
 void setup() {
   // put your setup code here, to run once:
    Serial.begin(9600);
@@ -22,18 +25,23 @@ void loop() {
 void handleInput(){
   if (Serial.available()){
         char input = Serial.read(); // read everything that has been received so far and log down
-                                    // the last entry
+                                    // the last entry                             
     switch (input){
-
-        case 'w': // go ahead
+        case 'w': // Car moves straight forward
             car.setSpeed(fSpeed);
             car.setAngle(0);
             break;
-        case 's': //reverse car
+        case 's': // Car moves straight backwards
             car.setSpeed(bSpeed);
             car.setAngle(0);
             break;
-        default: // if you receive something that you don't know, just stop
+        case 'a': // The car turns left while the car is in motion
+            car.setAngle(lTurn);
+            break;
+        case 'd': // The car turns right while the car is in motion
+            car.setAngle(rTurn);
+            break;
+        default: // Any other input stops the car
             car.setSpeed(0);
             car.setAngle(0);
         }
