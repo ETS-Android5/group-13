@@ -11,7 +11,6 @@ const int bSpeed = -70;
 void setup() {
   // put your setup code here, to run once:
    Serial.begin(9600);
-
 }
 
 void loop() {
@@ -30,12 +29,10 @@ void handleInput(){
             car.setSpeed(fSpeed);
             car.setAngle(0);
             break;
-
         case 's': //reverse car
             car.setSpeed(bSpeed);
             car.setAngle(0);
             break;
-
         default: // if you receive something that you don't know, just stop
             car.setSpeed(0);
             car.setAngle(0);
