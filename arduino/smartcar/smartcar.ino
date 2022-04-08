@@ -9,7 +9,8 @@ const int fSpeed = 70;
 const int bSpeed = -70;
 const int lTurn = -10;
 const int rTurn = 10;
-char lastDirection;
+const int lRotate = -30;
+const int rRotate = 30;
 SimpleCar car(control);
 void setup() {
   // put your setup code here, to run once:
@@ -40,6 +41,18 @@ void handleInput(){
             break;
         case 'd': // The car turns right while the car is in motion
             car.setAngle(rTurn);
+            break;
+        case 'q': //The car rotates to the left when standing still, if moving it comes to a stop
+            car.setSpeed(0);
+            car.setAngle(0);
+            delay(1000);
+            car.overrideMotorSpeed(lRotate, rRotate);
+            break;
+        case 'e': //The car rotates to the right when standing still, if moving it comes to a stop
+            car.setSpeed(0);
+            car.setAngle(0);
+            delay(1000);
+            car.overrideMotorSpeed(rRotate, lRotate);
             break;
         default: // Any other input stops the car
             car.setSpeed(0);
