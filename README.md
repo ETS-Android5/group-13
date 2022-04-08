@@ -10,7 +10,7 @@ Assisted driving is a great way to test all the capabilities of the car, and its
 Obstacle collision and cliff avoidance, In order to facilitate and make significantly safer to travel.
 
 ### How you are going to make it?
-In order to develop and test we are mostly going to use the emulator SMCE-Godot, in order to have a suitable environment and perform testing we are going to make complex obstacle courses using the software engine Godot. As a possible extra deliverable we plan to study our software solution applied to a real car we also plan to make a 3d model of a car, which is to be developed using 3d modeling software.
+In order to develop and test we are mostly going to use the emulator SMCE-Godot, in order to have a suitable environment and perform testing we are going to make complex obstacle courses using the software engine Godot. As a possible extra deliverable we plan to study our software solution applied to a real car we also plan to make a 3d model of a car, which is to be developed using 3d modeling software. In addition and with the aim of creating a truly embedded system we also plan to develop a phone application to control the car.
 
 ### What kind of technology you are going to use?
 **Runtime environment:** SMCE-Godot.
@@ -21,4 +21,4 @@ In order to develop and test we are mostly going to use the emulator SMCE-Godot,
 
 **Car model-sculpting:** Blender, Maya or Godot.
 
-**GUI development language:** Java.
+**GUI development language:** Android Studio + Java.
