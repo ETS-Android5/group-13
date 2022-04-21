@@ -31,8 +31,7 @@ const auto oneSecond = 1000UL;
 
 const auto triggerPin = 6;
 const auto echoPin = 7;
-const auto mqttBrokerUrl = "10.0.2.2";
-//const auto mqttBrokerUrl = "127.0.0.1";
+const auto mqttBrokerUrl = "127.0.0.1";
 
 const auto maxDistance = 400;
 SR04 front(arduinoRuntime, triggerPin, echoPin, maxDistance);
