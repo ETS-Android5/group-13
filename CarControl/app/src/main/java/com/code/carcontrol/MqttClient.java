@@ -5,7 +5,10 @@ import android.content.Context;
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.*;
 
-
+/*
+    This class contains the methods to connect, disconnect, subscribe, unsubscribe and
+    publish in mqtt
+ */
 public class MqttClient {
     private MqttAndroidClient mMqttAndroidClient;
 
