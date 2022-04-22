@@ -1,7 +1,3 @@
-
-
-
-//#include <Vector.h>
 #include <vector>
 
 #include <MQTT.h>
