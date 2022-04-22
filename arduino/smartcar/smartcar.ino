@@ -1,4 +1,8 @@
-#include <Vector.h>
+
+
+
+//#include <Vector.h>
+#include <vector>
 
 #include <MQTT.h>
 #include <WiFi.h>
@@ -36,10 +40,12 @@ const auto mqttBrokerUrl = "127.0.0.1";
 const auto maxDistance = 400;
 SR04 front(arduinoRuntime, triggerPin, echoPin, maxDistance);
 
+std::vector<char> frameBuffer
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  #ifdef __SMCE__
+#ifdef __SMCE__
   Camera.begin(QVGA, RGB888, 15);
   frameBuffer.resize(Camera.width() * Camera.height() * Camera.bytesPerPixel());
 #endif

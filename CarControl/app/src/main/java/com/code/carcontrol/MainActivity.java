@@ -22,7 +22,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "SmartcarMqttController";
-    private static final String EXTERNAL_MQTT_BROKER = "aerostun.dev";
+    private static final String EXTERNAL_MQTT_BROKER = "broker.hivemq.com";
     private static final String MQTT_SERVER = ("tcp://" + EXTERNAL_MQTT_BROKER + ":1883");
     private static final String THROTTLE_CONTROL = "/smartcar/control/throttle";
     private static final String STEERING_CONTROL = "/smartcar/control/steering";
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         mMqttClient = new MqttClient(getApplicationContext(), MQTT_SERVER, "");
 
-        //mCameraView = findViewById(R.id.imageView);
+
 
 
         //create a window
