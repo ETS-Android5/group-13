@@ -46,6 +46,18 @@ public class Joystick {
         innerCirclePaint.setStyle(Paint.Style.FILL_AND_STROKE);
     }
 
+    public String getInnerCirclePosition(){
+        double innerCirclerPositionX = (int) (outerCircleCenterPositionX + actuatorX*outerCircleRadius);
+        double innerCirclePositionY = (int) (outerCircleCenterPositionY + actuatorY*outerCircleRadius);
+        //1100, 450 are the initial positions for the joystick, this method returns the displacement
+        // among the two different axis
+        double distanceX = innerCirclerPositionX - 1100;
+        double distanceY = innerCirclePositionY - 450;
+        return distanceX +" "+distanceY;
+    }
+
+
+
     public void draw(Canvas canvas) {
         // Draw outer circle
         canvas.drawCircle(

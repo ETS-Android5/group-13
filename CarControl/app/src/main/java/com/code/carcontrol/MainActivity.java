@@ -34,32 +34,26 @@ public class MainActivity extends AppCompatActivity {
     private static final int IMAGE_WIDTH = 320;
     private static final int IMAGE_HEIGHT = 240;
 
-    private MqttClient mMqttClient;
-    private boolean isConnected = false;
-    private ImageView mCameraView;
+    public static MqttClient mMqttClient;
+    public static boolean isConnected = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    mMqttClient = new MqttClient(getApplicationContext(), MQTT_SERVER, TAG);
+    //create a window
+    Window window = getWindow();
+    //make it full screen
+    setContentView(R.layout.activity_main);
+    window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+    );
+    setContentView(new Game(this));
 
-        mMqttClient = new MqttClient(getApplicationContext(), MQTT_SERVER, "");
-
-
-
-
-        //create a window
-        Window window = getWindow();
-        //make it full screen
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_main);
-        window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-        );
-        setContentView(new Game(this));
-
-        connectToMqttBroker();
-    }
+    connectToMqttBroker();
+}
 
     @Override
     protected void onResume() {
@@ -130,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                             colors[ci] = Color.rgb(r, g, b);
                         }
                         bm.setPixels(colors, 0, IMAGE_WIDTH, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
-                        mCameraView.setImageBitmap(bm);
+
                     } else {
                         Log.i(TAG, "[MQTT] Topic: " + topic + " | Message: " + message.toString());
                     }

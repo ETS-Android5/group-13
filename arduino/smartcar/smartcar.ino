@@ -29,9 +29,15 @@ SimpleCar car(control);
 
 const auto oneSecond = 1000UL;
 
+#ifdef __SMCE__
 const auto triggerPin = 6;
 const auto echoPin = 7;
 const auto mqttBrokerUrl = "127.0.0.1";
+#else
+const auto triggerPin = 33;
+const auto echoPin = 32;
+const auto mqttBrokerUrl = "127.0.0.1";
+#endif
 
 const auto maxDistance = 400;
 SR04 front(arduinoRuntime, triggerPin, echoPin, maxDistance);
@@ -48,6 +54,7 @@ void setup() {
 
   WiFi.begin(ssid, pass);
   mqtt.begin(mqttBrokerUrl, 1883, net);
+  //mqtt.begin(net);
 
   Serial.println("Connecting to WiFi...");
   auto wifiStatus = WiFi.status();
@@ -62,6 +69,7 @@ void setup() {
   Serial.println("Connecting to MQTT broker");
   while (!mqtt.connect("arduino", "public", "public")) {
     Serial.print(".");
+    mqtt.subscribe("/throttle");
     delay(1000);
   }
 
