@@ -1,5 +1,8 @@
 package com.code.carcontrol;
 
+import static com.code.carcontrol.MainActivity.isConnected;
+import static com.code.carcontrol.MainActivity.mMqttClient;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -101,6 +104,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     public void update() {
+        if(isConnected){
+            joystick.getSideSpeeds();
+        }
         joystick.update();
     }
 }

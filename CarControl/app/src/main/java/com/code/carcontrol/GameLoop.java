@@ -3,7 +3,12 @@ import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
+
+
 public class GameLoop extends Thread{
+    /*
+    this class manages the UPS and FPS of the application and runs the loop
+     */
     public static final double MAX_UPS = 30.0;
     private static final double UPS_PERIOD = 1E+3/MAX_UPS;
 
@@ -33,6 +38,7 @@ public class GameLoop extends Thread{
         start();
     }
 
+    //method to run the loop, it is optimized to provide 30 FPS and 30 UPS
     @Override
     public void run() {
         Log.d("GameLoop.java", "run()");
@@ -101,16 +107,6 @@ public class GameLoop extends Thread{
                 frameCount = 0;
                 startTime = System.currentTimeMillis();
             }
-        }
-    }
-
-    public void stopLoop() {
-        Log.d("GameLoop.java", "stopLoop()");
-        isRunning = false;
-        try {
-            join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 }
