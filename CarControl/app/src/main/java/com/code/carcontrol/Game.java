@@ -105,9 +105,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
     public void update() {
         if(isConnected){
-            mMqttClient.publish("/throttle", joystick.getInnerCirclePosition(), 1,null);
+            joystick.getSideSpeeds();
         }
-        System.out.println(joystick.getInnerCirclePosition());
         joystick.update();
     }
 }
