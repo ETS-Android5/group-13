@@ -14,28 +14,34 @@ WiFiClient net;
 //wifi credentials
 const char ssid[] = "***";
 const char pass[] = "****";
+const auto FRONT_IR = 0;
+const auto LEFT_IR = 1;
+const auto RIGHT_IR = 2;
+const auto BACK_IR = 3;
 
-//instanciation of car components
+
+//instantiation of car components
 ArduinoRuntime arduinoRuntime;
 BrushedMotor leftMotor(arduinoRuntime, smartcarlib::pins::v2::leftMotorPins);
 BrushedMotor rightMotor(arduinoRuntime, smartcarlib::pins::v2::rightMotorPins);
 DifferentialControl control(leftMotor, rightMotor);
 
+//instantiates infrared sensors
+GP2D120 frontIR(arduinoRuntime, FRONT_IR); // measure distances between 5 and 25 centimeters
+GP2D120 backIR(arduinoRuntime, BACK_IR);
+GP2D120 leftIR(arduinoRuntime, LEFT_IR);
+GP2D120 rightIR(arduinoRuntime, RIGHT_IR);
+
 SimpleCar car(control);
 
-const auto oneSecond = 1000UL;
-//function to choose pins and the broker URL
+//function to choose the broker URL
 #ifdef __SMCE__
-const auto triggerPin = 6;
-const auto echoPin = 7;
 const auto mqttBrokerUrl = "broker.hivemq.com";
 #else
-const auto triggerPin = 33;
-const auto echoPin = 32;
-const auto mqttBrokerUrl = "192.168.0.40";
+const auto mqttBrokerUrl = "broker.hivemq.com";
 #endif
 const auto maxDistance = 400;
-SR04 front(arduinoRuntime, triggerPin, echoPin, maxDistance);
+
 
 std::vector<char> frameBuffer;
 
@@ -74,10 +80,10 @@ void setup() {
   //handle message
   mqtt.onMessage([](String topic, String message) {
     if (topic == "DIT133Group13/LeftSpeed") {
-      Serial.println("changing left speed");
+      //Serial.println("changing left speed");
       leftMotor.setSpeed(message.toInt());
     } else if (topic == "DIT133Group13/RightSpeed") {
-      Serial.println("changing right speed");
+      //Serial.println("changing right speed");
       rightMotor.setSpeed(message.toInt());
     }
   });
@@ -92,6 +98,7 @@ void loop() {
       mqtt.connect("arduino", "public", "public");
       mqtt.subscribe("DIT133Group13/#", 1);
    }
+  
 
 // Avoid over-using the CPU if we are running in the emulator
 #ifdef __SMCE__
