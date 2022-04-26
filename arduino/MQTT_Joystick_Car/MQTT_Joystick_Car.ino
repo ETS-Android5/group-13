@@ -14,10 +14,10 @@ WiFiClient net;
 //wifi credentials
 const char ssid[] = "***";
 const char pass[] = "****";
-const auto FRONT_IR = 0;
-const auto LEFT_IR = 1;
-const auto RIGHT_IR = 2;
-const auto BACK_IR = 3;
+const auto FRONT_IR_PIN = 0;
+const auto LEFT_IR_PIN = 1;
+const auto RIGHT_IR_PIN = 2;
+const auto BACK_IR_PIN = 3;
 
 
 //instantiation of car components
@@ -27,10 +27,10 @@ BrushedMotor rightMotor(arduinoRuntime, smartcarlib::pins::v2::rightMotorPins);
 DifferentialControl control(leftMotor, rightMotor);
 
 //instantiates infrared sensors
-GP2D120 frontIR(arduinoRuntime, FRONT_IR); // measure distances between 5 and 25 centimeters
-GP2D120 backIR(arduinoRuntime, BACK_IR);
-GP2D120 leftIR(arduinoRuntime, LEFT_IR);
-GP2D120 rightIR(arduinoRuntime, RIGHT_IR);
+GP2D120 frontIR(arduinoRuntime, FRONT_IR_PIN); // measure distances between 5 and 25 centimeters
+GP2D120 backIR(arduinoRuntime, BACK_IR_PIN);
+GP2D120 leftIR(arduinoRuntime, LEFT_IR_PIN);
+GP2D120 rightIR(arduinoRuntime, RIGHT_IR_PIN);
 
 SimpleCar car(control);
 
@@ -98,7 +98,22 @@ void loop() {
       mqtt.connect("arduino", "public", "public");
       mqtt.subscribe("DIT133Group13/#", 1);
    }
-  
+  if (frontIR.getDistance() > 0){
+    Serial.print("Front: ");
+    Serial.println(frontIR.getDistance());
+   }
+   if (backIR.getDistance() > 0) {
+    Serial.print("Back: ");
+    Serial.println(backIR.getDistance());
+   }
+   if (leftIR.getDistance() > 0){
+    Serial.print("Left: ");
+    Serial.println(leftIR.getDistance());
+   }
+   if (rightIR.getDistance() > 0){
+    Serial.print("Right: ");
+    Serial.println(rightIR.getDistance());
+   }
 
 // Avoid over-using the CPU if we are running in the emulator
 #ifdef __SMCE__
