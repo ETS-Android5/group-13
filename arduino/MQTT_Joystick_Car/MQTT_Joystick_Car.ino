@@ -86,9 +86,14 @@ void setup() {
           Serial.println(frontIR.getDistance());
           leftMotor.setSpeed(0);
           rightMotor.setSpeed(0);
-       }else{
-          leftMotor.setSpeed(message.toInt());
-        }
+       }else if (backIR.getDistance() > 0 && backIR.getDistance() <40 && message.toInt() < 0){
+          Serial.print("Back obstacle detected at distance: ");
+          Serial.println(backIR.getDistance());
+          leftMotor.setSpeed(0);
+          rightMotor.setSpeed(0);
+        }else{
+            leftMotor.setSpeed(message.toInt());
+          }
     } else if (topic == "DIT133Group13/RightSpeed") {
       //Serial.println("changing right speed");
       if (frontIR.getDistance() > 0 && frontIR.getDistance() <40 && message.toInt() > 0){
@@ -96,9 +101,14 @@ void setup() {
           Serial.println(frontIR.getDistance());
           leftMotor.setSpeed(0);
           rightMotor.setSpeed(0);
-       }else{
-          rightMotor.setSpeed(message.toInt());
-        }
+       }else if (backIR.getDistance() > 0 && backIR.getDistance() <40 && message.toInt() < 0){
+          Serial.print("Back obstacle detected at distance: ");
+          Serial.println(backIR.getDistance());
+          leftMotor.setSpeed(0);
+          rightMotor.setSpeed(0);
+        }else{
+            rightMotor.setSpeed(message.toInt());
+          }
     }
   });
 }
