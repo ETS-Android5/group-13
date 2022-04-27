@@ -30,12 +30,11 @@ public class Joystick {
     private double actuatorX;
     private double actuatorY;
 
-    /** Explain waht this method does
+    /**
      * constructor with joystick coordinates
-     * @param centerPositionX What is this parameter
-     * @param centerPositionY What is this parameter
-     * @param outerCircleRadius What is this parameter
-     * @param innerCircleRadius What is this parameter
+     * it initializes the coordinates of the outer, inmovable circle
+     * and the inner, interactive circle that make up the joystick
+     * The other lines of code are used to set the color for the joystick circles
      */
     public Joystick(int centerPositionX, int centerPositionY, int outerCircleRadius, int innerCircleRadius) {
 
@@ -63,7 +62,9 @@ public class Joystick {
 
     /**
      * method to get the displacement of the joystick in the Y axis to determine overall speed
-     * @return explain what is returned
+     * It calculates the displacement on the y axis, substract the initial coordinates, and divide it
+     * by 300 units, which is the maximum displacement and multiply by the top speed to get it proportional
+     * to the displacement
      */
     public double getSpeed() {
         double innerCirclePositionY = (int) (outerCircleCenterPositionY + actuatorY*outerCircleRadius);
@@ -91,7 +92,6 @@ public class Joystick {
     /**
      * method to show the joystick on screen
      * joystick is made up of two circles
-     * @param canvas Explain what this parameter is used for
      */
     public void draw(Canvas canvas) {
         // Draw outer circle
@@ -112,17 +112,13 @@ public class Joystick {
     }
 
     /**
-     * Explaion what this method does here
+     * the following two methods recalculate the innercircle position and is called in other methods to redraw
+     * the joystick
      */
     public void update() {
         updateInnerCirclePosition();
     }
 
-    //method to update joystick position when clicked on
-
-    /**
-     * Explaion what this method does here
-     */
     private void updateInnerCirclePosition() {
         innerCircleCenterPositionX = (int) (outerCircleCenterPositionX + actuatorX*outerCircleRadius);
         innerCircleCenterPositionY = (int) (outerCircleCenterPositionY + actuatorY*outerCircleRadius);
@@ -131,18 +127,14 @@ public class Joystick {
     //method to set joystick actuator
 
     /**
-     * Explain what this method does here
-     * @param touchPositionX explain what this parameter is
-     * @param touchPositionY explain what this parameter is
+     * This method does the mathematical calculations needed to calculate the movement of the joystick
+     * @param touchPositionX is the Y coordinate on screen of the joystick when dragged by a user
+     * @param touchPositionY is the X coordinate on screen of the joystick when dragged by a user
      */
     public void setActuator(double touchPositionX, double touchPositionY) {
         double deltaX = touchPositionX - outerCircleCenterPositionX;
         double deltaY = touchPositionY - outerCircleCenterPositionY;
         double deltaDistance = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
-
-
-         // Made it move more natural than before // William
-        // remove 121, 122, 126 and 127 to reverse it.
         if(deltaDistance < outerCircleRadius) {
             actuatorX = deltaX/outerCircleRadius;
             actuatorY = deltaY/outerCircleRadius;
@@ -158,10 +150,8 @@ public class Joystick {
     //method to determine if joystick is being pressed
 
     /**
-     *
-     * @param touchPositionX // Explain what this is here
-     * @param touchPositionY // Explain what this is here
-     * @return // What is returned?
+     * method that takes in the position of the user click/drag and determines if it is made inside of
+     * the range of the inner joystick circle, returning true in that case
      */
     public boolean isPressed(double touchPositionX, double touchPositionY) {
         joystickCenterToTouchDistance = Math.sqrt(
@@ -180,7 +170,7 @@ public class Joystick {
     }
 
     /**
-     * Explain what this method is for
+     * method that resets the joystick position to 0,0 if user input stops
      */
     public void resetActuator() {
         actuatorX = 0;

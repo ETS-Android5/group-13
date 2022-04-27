@@ -27,16 +27,23 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class MainActivity extends AppCompatActivity {
     /*
-    Explain what these attributes do
+        The following attributes are used for the MQTT connection
      */
     private static final String TAG = "SmartcarMqttController";
     private static final String EXTERNAL_MQTT_BROKER = "broker.hivemq.com";
     private static final String PORT = ":1883";
     private static final String MQTT_SERVER = ("tcp://" + EXTERNAL_MQTT_BROKER + PORT);
+    /*
+        The following attributes are used for the broadcast on screen of the car's camera view
+     */
     private static final int QOS = 1;
     private static final int IMAGE_WIDTH = 320;
     private static final int IMAGE_HEIGHT = 240;
 
+    /*
+        The following attributes are used for the publishing of messages and reconnection to the
+        server if needed
+     */
     public static MqttClient mMqttClient;
     public static boolean isConnected = false;
 
@@ -70,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * What this does
+     * This method, currently without usages, allows to resume the application and connection to mqtt
+     * if it has been previously paused
      */
     @Override
     protected void onResume() {
@@ -80,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * What this does
+     * This method, currently without usages, allows to pause the application and connection to mqtt
      */
     @Override
     protected void onPause() {
@@ -98,13 +106,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /** Put more comments explaining this method inside the code.
-     * method to connect to the broker
+    /**
+     * Method to connect to the MQTT broker
      */
 
     private void connectToMqttBroker() {
         if (!isConnected) {
             mMqttClient.connect(TAG, "", new IMqttActionListener() {
+                /**
+                 * Sub-Method to communicate via log when a connection is successful
+                 * We include line 128 and 129 in case we want to broadcast the camera in the future
+                 */
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     isConnected = true;
@@ -113,10 +125,12 @@ public class MainActivity extends AppCompatActivity {
                     Log.i(TAG, successfulConnection);
                     Toast.makeText(getApplicationContext(), successfulConnection, Toast.LENGTH_SHORT).show();
 
-                    mMqttClient.subscribe("/smartcar/ultrasound/front", QOS, null);
-                    mMqttClient.subscribe("/smartcar/camera", QOS, null);
+                    //mMqttClient.subscribe("/smartcar/ultrasound/front", QOS, null);
+                    //mMqttClient.subscribe("/smartcar/camera", QOS, null);
                 }
-
+                /**
+                 * Sub-Method to communicate via log when a connection is unsuccessful
+                 */
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     final String failedConnection = "Failed to connect to MQTT broker";
@@ -125,6 +139,9 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), failedConnection, Toast.LENGTH_SHORT).show();
                 }
             }, new MqttCallback() {
+                /**
+                 * Sub-Method to communicate via log when the connection is lost
+                 */
                 @Override
                 public void connectionLost(Throwable cause) {
                     isConnected = false;
@@ -133,7 +150,10 @@ public class MainActivity extends AppCompatActivity {
                     Log.w(TAG, connectionLost);
                     Toast.makeText(getApplicationContext(), connectionLost, Toast.LENGTH_SHORT).show();
                 }
-
+                /**
+                 * Sub-Method without current use that allows the application to recieve the broadcasting
+                 * of the car's camera view.
+                 */
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
                     if (topic.equals("/smartcar/camera")) {
@@ -153,7 +173,9 @@ public class MainActivity extends AppCompatActivity {
                         Log.i(TAG, "[MQTT] Topic: " + topic + " | Message: " + message.toString());
                     }
                 }
-
+                /**
+                 * Sub-Method to indicate the successful delivery of a message
+                 */
                 @Override
                 public void deliveryComplete(IMqttDeliveryToken token) {
                     Log.d(TAG, "Message delivered");

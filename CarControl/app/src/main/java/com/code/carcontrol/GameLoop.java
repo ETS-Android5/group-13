@@ -4,23 +4,30 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 
 /**
- * Explain more what this class does, how it is used and why we need it.
- * this class manages the UPS and FPS of the application and runs the loop
+ * this class manages the UPS and FPS of the application and runs the loop that refreshes the app
  */
 
 public class GameLoop extends Thread{
-    /*
-    Explain what these attributes do
+    /**
+    *The following attributes are used to calculate the UPS and FPS and cap them to increse performace
      */
     public static final double MAX_UPS = 30.0;
     private static final double UPS_PERIOD = 1E+3/MAX_UPS;
+    private double averageUPS;
+    private double averageFPS;
 
+    /**
+     *The following attributes are necessary to show the "game" content and place in on the surface
+     * so the user can see it
+     */
     private Game game;
     private SurfaceHolder surfaceHolder;
 
+    /**
+     *The following variable indicates if the app is running, it will be set to true when the game loop
+     * starts
+     */
     private boolean isRunning = false;
-    private double averageUPS;
-    private double averageFPS;
 
     public GameLoop(Game game, SurfaceHolder surfaceHolder) {
         this.game = game;

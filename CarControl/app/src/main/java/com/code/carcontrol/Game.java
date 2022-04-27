@@ -21,8 +21,8 @@ import androidx.core.content.ContextCompat;
  */
 
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
-    /*
-    Explain what these attributes do
+    /**
+     * attributes used to keep the application in a loop and initialize the joystick
      */
     private GameLoop gameLoop;
     Context context;
@@ -50,8 +50,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     /**
-     * Explain what this method does
-     * @param holder What this does
+     * Method that starts the loop once the surface is created
      */
 
     @Override
@@ -60,9 +59,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     /**
-     * Explain what hits method does
-     * @param event what this does
-     * @return what is returned
+     * Method to gather the coordinates of the joystick when pressed and moved by the user
      */
     @Override
     public boolean onTouchEvent(MotionEvent event){
@@ -86,30 +83,21 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     /**
-     * Explain what this does and what will be in it
-     * @param holder What this is
-     * @param format What this is
-     * @param width What this is
-     * @param height What this is
+     * The following methods are obligatory to override in order to use the interface, but no new
+     * functionality is added in them
      */
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height){
 
     }
-
-    /**
-     * Explain what this does and what will be in it
-     * @param holder what this is
-     */
     @Override
     public void surfaceDestroyed(SurfaceHolder holder){
 
     }
 
     /**
-     * Update circles & joystick
-     * @param canvas what this is
+     * This three methods draw the joystick, FPS and UPS on the canvas (screen output)
      */
 
     @Override
@@ -120,8 +108,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         drawUPS(canvas);
         joystick.draw(canvas);
     }
-
-    // We should now have UPS drawn on canvas / William
     public void drawUPS(Canvas canvas){
         String averageUPS = Double.toString(gameLoop.getAverageUPS());
         Paint paint = new Paint();
@@ -130,8 +116,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         paint.setTextSize(50);
         canvas.drawText("UPS: "+ averageUPS,100,40, paint);
     }
-
-    // We should now have FPS drawn on canvas / William
     public void drawFPS(Canvas canvas){
         String averageFPS = Double.toString(gameLoop.getAverageFPS());
         Paint paint = new Paint();
@@ -142,7 +126,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     /**
-     * Explain what this method does
+     * this method is called repeately to update the game state
+     * joystick.update() updates the functionality and position of the joystick
+     * joystick.getSideSpeeds() gathers the positioning of the joystick and sends user input to the
+     * MQTT server
      */
     public void update() {
         if(isConnected){

@@ -16,12 +16,8 @@ public class MqttClient {
         mMqttAndroidClient = new MqttAndroidClient(context, serverUrl, clientId);
     }
 
-    /** Explain what htis method does
-     *
-     * @param username what thsi is
-     * @param password what htis is
-     * @param connectionCallback what this is
-     * @param clientCallback what this is
+    /**
+     * This method connects to the MQTT client using credentials
      */
     public void connect(String username, String password, IMqttActionListener connectionCallback, MqttCallback clientCallback) {
         mMqttAndroidClient.setCallback(clientCallback);
@@ -39,8 +35,7 @@ public class MqttClient {
     }
 
     /**
-     * Explain what htis method does
-     * @param disconnectionCallback what this is
+     * This method disconnects from the MQTT client
      */
 
     public void disconnect(IMqttActionListener disconnectionCallback) {
@@ -52,10 +47,7 @@ public class MqttClient {
     }
 
     /**
-     * Explain what this method does
-     * @param topic what this is
-     * @param qos what this is
-     * @param subscriptionCallback what this is
+     * Method used to subscribe to a MQTT topic and disable method that act on the event listener
      */
     public void subscribe(String topic, int qos, IMqttActionListener subscriptionCallback) {
         try {
@@ -66,9 +58,7 @@ public class MqttClient {
     }
 
     /**
-     * Explain when this method is used what it does
-     * @param topic what this is
-     * @param unsubscriptionCallback what htis is
+     * Method to unsubscribe from a topic in a MQTT server
      */
 
     public void unsubscribe(String topic, IMqttActionListener unsubscriptionCallback) {
@@ -80,11 +70,7 @@ public class MqttClient {
     }
 
     /**
-     * Explain what this method does
-     * @param topic what this is
-     * @param message what this is
-     * @param qos what this is
-     * @param publishCallback what htis is
+     * Method to public a MQTT message made up of a topic and a string
      */
 
     public void publish(String topic, String message, int qos, IMqttActionListener publishCallback) {
