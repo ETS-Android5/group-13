@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     this class sets up the necessary components and runs the application when they are ready
      */
     private static final String TAG = "SmartcarMqttController";
-    private static final String EXTERNAL_MQTT_BROKER = "broker.hivemq.com";
+    private static final String EXTERNAL_MQTT_BROKER = "broker.emqx.io";
     private static final String PORT = ":1883";
     private static final String MQTT_SERVER = ("tcp://" + EXTERNAL_MQTT_BROKER + PORT);
     private static final int QOS = 1;
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     //method to connect to the broker
-    private void connectToMqttBroker() {
+    public void connectToMqttBroker() {
         if (!isConnected) {
             mMqttClient.connect(TAG, "", new IMqttActionListener() {
                 @Override
@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
                     final String connectionLost = "Connection to MQTT broker lost";
                     Log.w(TAG, connectionLost);
                     Toast.makeText(getApplicationContext(), connectionLost, Toast.LENGTH_SHORT).show();
+                    connectToMqttBroker();
                 }
 
                 @Override
