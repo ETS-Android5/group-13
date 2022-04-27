@@ -17,7 +17,7 @@
         </service>
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:exported="true">
 
             <intent-filter>

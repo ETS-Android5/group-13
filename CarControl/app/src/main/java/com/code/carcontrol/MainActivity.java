@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -19,10 +21,13 @@ import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+/**
+ * this class sets up the necessary components and runs the application when they are ready
+ */
 
 public class MainActivity extends AppCompatActivity {
     /*
-    this class sets up the necessary components and runs the application when they are ready
+    Explain what these attributes do
      */
     private static final String TAG = "SmartcarMqttController";
     private static final String EXTERNAL_MQTT_BROKER = "broker.hivemq.com";
@@ -39,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Draw out the XML design on to the canvas.
         setContentView(R.layout.activity_main);
         mMqttClient = new MqttClient(getApplicationContext(), MQTT_SERVER, TAG);
         //create a window
@@ -49,11 +56,22 @@ public class MainActivity extends AppCompatActivity {
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         );
-        setContentView(new Game(this));
+
+        // Creates a reference to the LinearLayout in the xml sheet
+        LinearLayout joystick = (LinearLayout) findViewById(R.id.joystick);
+        // Clears it of any children
+        joystick.removeAllViews();
+        // Add Juan's  joystick object to this layout
+        joystick.addView(new Game(this));
+        
+        //setContentView(new Game(this)); old game joystick only
 
      connectToMqttBroker();
     }
 
+    /**
+     * What this does
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -61,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
         connectToMqttBroker();
     }
 
+    /**
+     * What this does
+     */
     @Override
     protected void onPause() {
         super.onPause();
@@ -76,7 +97,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    //method to connect to the broker
+
+    /** Put more comments explaining this method inside the code.
+     * method to connect to the broker
+     */
+
     private void connectToMqttBroker() {
         if (!isConnected) {
             mMqttClient.connect(TAG, "", new IMqttActionListener() {
