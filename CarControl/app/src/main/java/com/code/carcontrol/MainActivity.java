@@ -9,9 +9,11 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -40,12 +42,20 @@ public class MainActivity extends AppCompatActivity {
     private static final int IMAGE_WIDTH = 320;
     private static final int IMAGE_HEIGHT = 240;
 
-    /*
+    /*ö
         The following attributes are used for the publishing of messages and reconnection to the
         server if needed
      */
     public static MqttClient mMqttClient;
     public static boolean isConnected = false;
+
+    Button rotateLeft;
+    Button rotateRight;
+    Button cruiseControl;
+
+    private boolean rotatingRight = false;
+    private boolean rotatingLeft  = false;
+    private boolean cruiseControlToggled = false;
 
     //creates the surface, client connection, window and sets the content on screen
     @Override
@@ -60,8 +70,8 @@ public class MainActivity extends AppCompatActivity {
         //make it full screen
         setContentView(R.layout.activity_main);
         window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
         );
 
         // Creates a reference to the LinearLayout in the xml sheet
@@ -70,10 +80,58 @@ public class MainActivity extends AppCompatActivity {
         joystick.removeAllViews();
         // Add Juan's  joystick object to this layout
         joystick.addView(new Game(this));
-        
+
         //setContentView(new Game(this)); old game joystick only
 
-     connectToMqttBroker();
+        connectToMqttBroker();
+         rotateLeft = (Button)findViewById(R.id.ROTATE_LEFT);
+         rotateRight = (Button)findViewById(R.id.ROTATE_RIGHT);
+         cruiseControl = (Button)findViewById(R.id.CRUISE_CONTROL);
+
+        rotateLeft.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN && rotatingLeft == false) {
+                    mMqttClient.publish("DIT133Group13/RotateLeft", "1", 1,null);
+                    rotatingLeft = true;
+                    rotatingRight = false;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    mMqttClient.publish("DIT133Group13/RotateLeft", "0", 1,null);
+                    rotatingLeft = false;
+                }
+                return false;
+            }
+        });
+
+        rotateRight.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN && rotatingRight == false) {
+                    mMqttClient.publish("DIT133Group13/RotateRight", "1", 1,null);
+                    rotatingRight = true;
+                    rotatingLeft = false;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    mMqttClient.publish("DIT133Group13/RotateRight", "0", 1, null);
+                    rotatingRight = false;
+                }
+
+                return false;
+            }
+        });
+
+        cruiseControl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cruiseControlToggled = !cruiseControlToggled;
+                if (cruiseControlToggled) {
+                    cruiseControl.setTextColor(Color.rgb(29,75,29));
+                    mMqttClient.publish("DIT133Group13/CruiseControl", "1", 1,null);
+                } else {
+                    cruiseControl.setTextColor(Color.rgb(75,29,29));
+                    mMqttClient.publish("DIT133Group13/CruiseControl", "0", 1,null);
+                }
+            }
+        });
     }
 
     /**
@@ -128,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
                     //mMqttClient.subscribe("/smartcar/ultrasound/front", QOS, null);
                     //mMqttClient.subscribe("/smartcar/camera", QOS, null);
                 }
+
                 /**
                  * Sub-Method to communicate via log when a connection is unsuccessful
                  */
@@ -150,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.w(TAG, connectionLost);
                     Toast.makeText(getApplicationContext(), connectionLost, Toast.LENGTH_SHORT).show();
                 }
+
                 /**
                  * Sub-Method without current use that allows the application to recieve the broadcasting
                  * of the car's camera view.
@@ -173,12 +233,13 @@ public class MainActivity extends AppCompatActivity {
                         Log.i(TAG, "[MQTT] Topic: " + topic + " | Message: " + message.toString());
                     }
                 }
+
                 /**
                  * Sub-Method to indicate the successful delivery of a message
                  */
                 @Override
                 public void deliveryComplete(IMqttDeliveryToken token) {
-                    Log.d(TAG, "Message delivered");
+                    //Log.d(TAG, "Message delivered");
                 }
             });
         }

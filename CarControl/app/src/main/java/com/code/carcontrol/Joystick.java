@@ -68,8 +68,8 @@ public class Joystick {
      */
     public double getSpeed() {
         double innerCirclePositionY = (int) (outerCircleCenterPositionY + actuatorY*outerCircleRadius);
-        double distanceY = 450 - innerCirclePositionY;
-        double speed = distanceY / 300.00;
+        double distanceY = 500 - innerCirclePositionY;
+        double speed = distanceY / 150.00;
         speed *= 50;
         return speed;
     }
@@ -79,13 +79,14 @@ public class Joystick {
      */
     public void getSideSpeeds(){
         double innerCirclerPositionX = (int) (outerCircleCenterPositionX + actuatorX*outerCircleRadius);
-        double distanceX =  1100 -innerCirclerPositionX;
-        System.out.println("updating");
+        double distanceX =  550 -innerCirclerPositionX;
         double speed = this.getSpeed();
-        double LeftSpeed = speed - speed * (distanceX/300);
-        double RightSpeed = speed + speed * (distanceX/300);
-        mMqttClient.publish("DIT133Group13/LeftSpeed", Double.toString(LeftSpeed), 1,null);
-        mMqttClient.publish("DIT133Group13/RightSpeed", Double.toString(RightSpeed), 1,null);
+        double LeftSpeed = speed - speed * (distanceX/150);
+        double RightSpeed = speed + speed * (distanceX/150);
+        if (LeftSpeed + RightSpeed != 0) {
+            mMqttClient.publish("DIT133Group13/LeftSpeed", Double.toString(LeftSpeed), 1, null);
+            mMqttClient.publish("DIT133Group13/RightSpeed", Double.toString(RightSpeed), 1, null);
+        }
         System.out.println("left: "+ LeftSpeed + " right: "+ RightSpeed);
     }
 
@@ -175,5 +176,7 @@ public class Joystick {
     public void resetActuator() {
         actuatorX = 0;
         actuatorY = 0;
+        mMqttClient.publish("DIT133Group13/LeftSpeed", "0.0", 1, null);
+        mMqttClient.publish("DIT133Group13/RightSpeed", "0.0", 1, null);
     }
 }
