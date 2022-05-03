@@ -1,0 +1,124 @@
+{
+   "vehicle": "CoolSensorCar",
+   "slots": {
+      "Front": {
+         "class": "AnalogRaycast",
+         "name": "Front Infrared",
+         "props": {
+            "pin": 0
+         }
+      },
+	  "FrontInnerLeft": {
+         "class": "AnalogRaycast",
+         "name": "Front Inner Left Infrared",
+         "props": {
+            "pin": 40
+         }
+      },
+	  "FrontOuterLeft": {
+         "class": "AnalogRaycast",
+         "name": "Front Outer Left Infrared",
+         "props": {
+            "pin": 41
+         }
+      },
+	  "FrontInnerRight": {
+         "class": "AnalogRaycast",
+         "name": "Front Inner Right Infrared",
+         "props": {
+            "pin": 42
+         }
+      },
+	  "FrontOuterRight": {
+         "class": "AnalogRaycast",
+         "name": "Front Outer Right Infrared",
+         "props": {
+            "pin": 43
+         }
+      },
+      "Front2": {
+         "class": "Camera",
+         "name": "Front Camera"
+      },
+      "FrontTop": {
+         "class": "UltraSonic",
+         "name": "Front UltraSonic",
+         "props": {
+            "trigger_pin": 6,
+            "echo_pin": 7
+         }
+      },
+      "Left": {
+         "class": "AnalogRaycast",
+         "name": "Left Infrared",
+         "props": {
+            "pin": 1
+         }
+      },
+      "Right": {
+         "class": "AnalogRaycast",
+         "name": "Right Infrared",
+         "props": {
+            "pin": 2
+         }
+      },
+      "Back": {
+         "class": "AnalogRaycast",
+         "name": "Back Infrared",
+         "props": {
+            "pin": 3
+         }
+      },
+	  "BackInnerLeft": {
+         "class": "AnalogRaycast",
+         "name": "Back Inner Left Infrared",
+         "props": {
+            "pin": 50
+         }
+      },
+	  "BackOuterLeft": {
+         "class": "AnalogRaycast",
+         "name": "Back Outer Left Infrared",
+         "props": {
+            "pin": 51
+         }
+      },
+	  "BackInnerRight": {
+         "class": "AnalogRaycast",
+         "name": "Back Inner Right Infrared",
+         "props": {
+            "pin": 52
+         }
+      },
+	  "BackOuterRight": {
+         "class": "AnalogRaycast",
+         "name": "Back Outer Right Infrared",
+         "props": {
+            "pin": 53
+         }
+      }
+   },
+   "builtin": {
+      "Left BrushedMotor": {
+         "forward_pin": 12,
+         "backward_pin": 14,
+         "enable_pin": 13
+      },
+      "Right BrushedMotor": {
+         "forward_pin": 25,
+         "backward_pin": 26,
+         "enable_pin": 27
+      },
+      "Gyroscope" : {
+         "pin": 205
+      },
+      "Left Odometer": {
+         "distance_pin": 35,
+         "direction_pin": 34
+      },
+      "Right Odometer": {
+         "distance_pin": 36,
+         "direction_pin": 39
+      }
+   }
+}
