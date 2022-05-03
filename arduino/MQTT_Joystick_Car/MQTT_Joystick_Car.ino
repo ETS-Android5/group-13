@@ -101,10 +101,34 @@ void setup() {
   mqtt.onMessage([](String topic, String message) {
     if (topic == "DIT133Group13/LeftSpeed") {
       //Serial.println("changing left speed");
-      leftMotor.setSpeed(message.toInt());
+       if (frontIR.getDistance() > 0 && frontIR.getDistance() <40 && message.toInt() > 0){
+          Serial.print("Front obstacle detected at distance: ");
+          Serial.println(frontIR.getDistance());
+          leftMotor.setSpeed(0);
+          rightMotor.setSpeed(0);
+       }else if (backIR.getDistance() > 0 && backIR.getDistance() <40 && message.toInt() < 0){
+          Serial.print("Back obstacle detected at distance: ");
+          Serial.println(backIR.getDistance());
+          leftMotor.setSpeed(0);
+          rightMotor.setSpeed(0);
+        }else{
+            leftMotor.setSpeed(message.toInt());
+          }
     } else if (topic == "DIT133Group13/RightSpeed") {
       //Serial.println("changing right speed");
-      rightMotor.setSpeed(message.toInt());
+      if (frontIR.getDistance() > 0 && frontIR.getDistance() <40 && message.toInt() > 0){
+          Serial.print("Front obstacle detected at distance: ");
+          Serial.println(frontIR.getDistance());
+          leftMotor.setSpeed(0);
+          rightMotor.setSpeed(0);
+       }else if (backIR.getDistance() > 0 && backIR.getDistance() <40 && message.toInt() < 0){
+          Serial.print("Back obstacle detected at distance: ");
+          Serial.println(backIR.getDistance());
+          leftMotor.setSpeed(0);
+          rightMotor.setSpeed(0);
+        }else{
+            rightMotor.setSpeed(message.toInt());
+          }
     }
   });
 }
@@ -118,22 +142,7 @@ void loop() {
       mqtt.connect("arduino", "public", "public");
       mqtt.subscribe("DIT133Group13/#", 1);
    }
-  if (frontIR.getDistance() > 0){
-    Serial.print("Front: ");
-    Serial.println(frontIR.getDistance());
-   }
-   if (backIR.getDistance() > 0) {
-    Serial.print("Back: ");
-    Serial.println(backIR.getDistance());
-   }
-   if (leftIR.getDistance() > 0){
-    Serial.print("Left: ");
-    Serial.println(leftIR.getDistance());
-   }
-   if (rightIR.getDistance() > 0){
-    Serial.print("Right: ");
-    Serial.println(rightIR.getDistance());
-   }
+  
 
 // Avoid over-using the CPU if we are running in the emulator
 #ifdef __SMCE__
