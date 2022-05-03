@@ -19,6 +19,16 @@ const auto LEFT_IR_PIN = 1;
 const auto RIGHT_IR_PIN = 2;
 const auto BACK_IR_PIN = 3;
 
+const auto FRONT_INNER_LEFT_IR_PIN = 40;
+const auto FRONT_OUTER_LEFT_IR_PIN = 41;
+const auto FRONT_INNER_RIGHT_IR_PIN = 42;
+const auto FRONT_OUTER_RIGHT_IR_PIN = 43;
+
+const auto BACK_INNER_LEFT_IR_PIN = 50;
+const auto BACK_OUTER_LEFT_IR_PIN = 51;
+const auto BACK_INNER_RIGHT_IR_PIN = 52;
+const auto BACK_OUTER_RIGHT_IR_PIN = 53;
+
 
 //instantiation of car components
 ArduinoRuntime arduinoRuntime;
@@ -32,13 +42,23 @@ GP2D120 backIR(arduinoRuntime, BACK_IR_PIN);
 GP2D120 leftIR(arduinoRuntime, LEFT_IR_PIN);
 GP2D120 rightIR(arduinoRuntime, RIGHT_IR_PIN);
 
+GP2D120 fronInnerLeftIR(arduinoRuntime, FRONT_INNER_LEFT_IR_PIN);
+GP2D120 frontOuterLeftIR(arduinoRuntime, FRONT_OUTER_LEFT_IR_PIN);
+GP2D120 frontInnerRightIR(arduinoRuntime, FRONT_INNER_RIGHT_IR_PIN);
+GP2D120 frontOuterRightIR(arduinoRuntime, FRONT_OUTER_RIGHT_IR_PIN);
+
+GP2D120 backInnerLeftIR(arduinoRuntime, BACK_INNER_LEFT_IR_PIN);
+GP2D120 backOuterLeftIR(arduinoRuntime, BACK_OUTER_LEFT_IR_PIN);
+GP2D120 backInnerRightIR(arduinoRuntime, BACK_INNER_RIGHT_IR_PIN);
+GP2D120 backOuterRightIR(arduinoRuntime, BACK_OUTER_RIGHT_IR_PIN);
+
 SimpleCar car(control);
 
 //function to choose the broker URL
 #ifdef __SMCE__
-const auto mqttBrokerUrl = "broker.emqx.io";
+const auto mqttBrokerUrl = "broker.hivemq.com";
 #else
-const auto mqttBrokerUrl = "broker.emqx.io";
+const auto mqttBrokerUrl = "broker.hivemq.com";
 #endif
 const auto maxDistance = 400;
 
