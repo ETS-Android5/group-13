@@ -45,4 +45,4 @@ jobs:
           arduino-cli lib install "MQTT"
       - name: Build sketch
         run: |
-          arduino-cli compile -b esp32:esp32:esp32doit-devkit-v1 arduino\MQTT_Joystick_Car/MQTT_Joystick_Car.ino
+          arduino-cli compile -b esp32:esp32:esp32doit-devkit-v1 arduino/MQTT_Joystick_Car/MQTT_Joystick_Car.ino
