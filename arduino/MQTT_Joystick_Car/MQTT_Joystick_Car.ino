@@ -126,10 +126,8 @@ void checkSensors() {
 
   
   if (carSpeed > 0 && blockForward) {         // If car is moving forward && path is blocked
-    serial.println("Front sensor blocked");
     car.setSpeed(0);
   } else if (carSpeed < 0 && blockReverse) {  // if car is moving backwards and path is blocked
-    serial.println("Back sensor blocked");
     car.setSpeed(0);
   }
 }
