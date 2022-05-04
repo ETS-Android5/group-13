@@ -1,0 +1,90 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://src/vehicles/template_car/TemplateCar.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/vehicles/stupid_car/car_parts/SMCE-hull.glb" type="PackedScene" id=2]
+[ext_resource path="res://src/vehicles/stupid_car/car_parts/SMCE-wheel.tscn" type="PackedScene" id=3]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 1, 0.126152, 1.21924 )
+
+[sub_resource type="BoxShape" id=2]
+extents = Vector3( 0.65013, 0.215063, 0.835885 )
+
+[sub_resource type="BoxShape" id=3]
+extents = Vector3( 1.90874, 0.215063, 0.486514 )
+
+[node name="TemplateCar" instance=ExtResource( 1 )]
+cosmetic_wheels = [ NodePath("LeftBack/wheel"), NodePath("LeftFront/wheel"), NodePath("RightBack/wheel"), NodePath("RightFront/wheel") ]
+
+[node name="Hull" parent="." index="0" instance=ExtResource( 2 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="." index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.140775, 0 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2" type="CollisionShape" parent="." index="2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.480199, 0 )
+shape = SubResource( 2 )
+
+[node name="CollisionShape3" type="CollisionShape" parent="." index="3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0801109, 1.70623 )
+shape = SubResource( 3 )
+
+[node name="CollisionShape4" type="CollisionShape" parent="." index="4"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0801109, -1.75447 )
+shape = SubResource( 3 )
+
+[node name="wheel" type="Spatial" parent="LeftBack" index="0"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, -0.7, 0 )
+
+[node name="wheel" parent="LeftBack/wheel" index="0" instance=ExtResource( 3 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0.502, 0 )
+
+[node name="wheel" type="Spatial" parent="LeftFront" index="0"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, -0.7, 0 )
+
+[node name="wheel" parent="LeftFront/wheel" index="0" instance=ExtResource( 3 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0.502, 0 )
+
+[node name="wheel" type="Spatial" parent="RightBack" index="0"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, -0.7, 0 )
+
+[node name="wheel" parent="RightBack/wheel" index="0" instance=ExtResource( 3 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.502, 0 )
+
+[node name="wheel" type="Spatial" parent="RightFront" index="0"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, -0.7, 0 )
+
+[node name="wheel" parent="RightFront/wheel" index="0" instance=ExtResource( 3 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.502, 0 )
+
+[node name="Front" parent="AttachmentSlots" index="0"]
+transform = Transform( 1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0.5, -2.15 )
+
+[node name="FrontInnerLeft" parent="AttachmentSlots" index="1"]
+transform = Transform( 0.965926, -0.0885213, 0.24321, 0, 0.939693, 0.34202, -0.258819, -0.330366, 0.907674, -1, 0.5, -2.15 )
+
+[node name="FrontOuterLeft" parent="AttachmentSlots" index="2"]
+transform = Transform( 0.707107, -0.241845, 0.664463, 0, 0.939693, 0.34202, -0.707107, -0.241845, 0.664463, -1.7, 0.5, -1.8 )
+
+[node name="FrontInnerRight" parent="AttachmentSlots" index="3"]
+transform = Transform( 0.965926, 0.0885213, -0.24321, 0, 0.939693, 0.34202, 0.258819, -0.330366, 0.907674, 1, 0.5, -2.15 )
+
+[node name="FrontOuterRight" parent="AttachmentSlots" index="4"]
+transform = Transform( 0.707107, 0.241845, -0.664463, 0, 0.939693, 0.34202, 0.707107, -0.241845, 0.664463, 1.7, 0.5, -1.8 )
+
+[node name="Back" parent="AttachmentSlots" index="9"]
+transform = Transform( -1, 5.16436e-08, -1.4189e-07, 0, 0.939693, 0.34202, 1.50996e-07, 0.34202, -0.939693, 0, 0.5, 2.15 )
+
+[node name="BackInnerRight" parent="AttachmentSlots" index="10"]
+transform = Transform( -0.965926, 0.0885213, -0.24321, 0, 0.939693, 0.34202, 0.258819, 0.330366, -0.907674, 1, 0.5, 2.15 )
+
+[node name="BackOuterRight" parent="AttachmentSlots" index="11"]
+transform = Transform( -0.707107, 0.241845, -0.664463, 0, 0.939693, 0.34202, 0.707107, 0.241845, -0.664463, 1.7, 0.5, 1.8 )
+
+[node name="BackInnerLeft" parent="AttachmentSlots" index="12"]
+transform = Transform( -0.965926, -0.0885213, 0.24321, 0, 0.939693, 0.34202, -0.258819, 0.330366, -0.907674, -1, 0.5, 2.15 )
+
+[node name="BackOuterLeft" parent="AttachmentSlots" index="13"]
+transform = Transform( -0.707107, -0.241845, 0.664463, 0, 0.939693, 0.34202, -0.707107, 0.241845, -0.664463, -1.7, 0.5, 1.8 )
