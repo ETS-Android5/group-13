@@ -83,10 +83,10 @@ public class Joystick {
         double speed = this.getSpeed();
         double LeftSpeed = speed - speed * (distanceX/150);
         double RightSpeed = speed + speed * (distanceX/150);
-        if (LeftSpeed + RightSpeed != 0) {
+
             mMqttClient.publish("DIT133Group13/LeftSpeed", Double.toString(LeftSpeed), 1, null);
             mMqttClient.publish("DIT133Group13/RightSpeed", Double.toString(RightSpeed), 1, null);
-        }
+
         System.out.println("left: "+ LeftSpeed + " right: "+ RightSpeed);
     }
 
@@ -176,7 +176,5 @@ public class Joystick {
     public void resetActuator() {
         actuatorX = 0;
         actuatorY = 0;
-        mMqttClient.publish("DIT133Group13/LeftSpeed", "0.0", 1, null);
-        mMqttClient.publish("DIT133Group13/RightSpeed", "0.0", 1, null);
     }
 }

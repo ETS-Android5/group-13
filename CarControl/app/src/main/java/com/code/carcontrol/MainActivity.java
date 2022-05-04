@@ -208,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
                     final String connectionLost = "Connection to MQTT broker lost";
                     Log.w(TAG, connectionLost);
                     Toast.makeText(getApplicationContext(), connectionLost, Toast.LENGTH_SHORT).show();
+                    connectToMqttBroker();
                 }
 
                 /**

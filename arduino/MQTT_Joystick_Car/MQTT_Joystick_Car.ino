@@ -75,9 +75,9 @@ int rmSpeed = 0;
 
 //Define MQTT Broker
 #ifdef __SMCE__
-const auto mqttBrokerUrl = "broker.hivemq.com";
+const auto mqttBrokerUrl = "test.mosquitto.org";
 #else
-const auto mqttBrokerUrl = "broker.emqx.io";
+const auto mqttBrokerUrl = "test.mosquitto.org";
 #endif
 const auto maxDistance = 400;
 
@@ -114,7 +114,7 @@ void loop() {
  */
 
 void checkSensors() {
-  int minDistance = 0;
+  int minDistance = 20;
   int maxDistance = 40;
   int carSpeed = car.getSpeed() * 3.6;
   int frontSensor = frontIR.getDistance();
@@ -122,12 +122,14 @@ void checkSensors() {
   
   // Checks if direction
   blockForward    = (frontSensor > minDistance && frontSensor < maxDistance);
-  blockReverse    = (backSensor > 0 && backSensor < 40);
+  blockReverse    = (backSensor > minDistance && backSensor < maxDistance);
 
   
   if (carSpeed > 0 && blockForward) {         // If car is moving forward && path is blocked
+    serial.println("Front sensor blocked");
     car.setSpeed(0);
   } else if (carSpeed < 0 && blockReverse) {  // if car is moving backwards and path is blocked
+    serial.println("Back sensor blocked");
     car.setSpeed(0);
   }
 }
