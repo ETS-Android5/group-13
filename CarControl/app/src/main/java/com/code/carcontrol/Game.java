@@ -5,7 +5,9 @@ import static com.code.carcontrol.MainActivity.mMqttClient;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -13,14 +15,19 @@ import android.view.View;
 
 import androidx.core.content.ContextCompat;
 
-public class Game extends SurfaceView implements SurfaceHolder.Callback{
+/**
+ * this class manages all objects in the "Control Panel" and is responsible for updating all states
+ * and rendering all objects to the screen
+ */
+
+public class Game extends SurfaceView implements SurfaceHolder.Callback {
+    /**
+     * attributes used to keep the application in a loop and initialize the joystick
+     */
     private GameLoop gameLoop;
     Context context;
     private final Joystick joystick;
-    /*
-    this class manages all objects in the "Control Panel" and is responsible for updating all states
-    and rendering all objects to the screen
-     */
+
 
     public Game(Context context){
 
@@ -35,17 +42,25 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         //create and setup game loop
         gameLoop = new GameLoop(this, surfaceHolder);
         //Design of joystick: its position on the screen and size of outer-/inner circles
-        joystick = new Joystick(1100, 450, 300, 200);
-        setFocusable(true);
+        //joystick = new Joystick(1100, 450, 300, 200); OLD
 
+        // This places the joystick in the center position of the smaller LinearView
+        joystick = new Joystick(550, 500, 300, 200);
+        setFocusable(true);
     }
 
+    /**
+     * Method that starts the loop once the surface is created
+     */
 
     @Override
     public void surfaceCreated(SurfaceHolder holder){
         gameLoop.startLoop();
     }
 
+    /**
+     * Method to gather the coordinates of the joystick when pressed and moved by the user
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event){
         switch (event.getAction()){
@@ -67,6 +82,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         return super.onTouchEvent(event);
     }
 
+    /**
+     * The following methods are obligatory to override in order to use the interface, but no new
+     * functionality is added in them
+     */
+
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height){
 
@@ -75,16 +95,19 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     public void surfaceDestroyed(SurfaceHolder holder){
 
     }
-    //Update circles & joystick
+
+    /**
+     * This three methods draw the joystick, FPS and UPS on the canvas (screen output)
+     */
+
     @Override
     public void draw(Canvas canvas){
         super.draw(canvas);
+        canvas.drawColor(Color.parseColor("#555555"));
         drawFPS(canvas);
         drawUPS(canvas);
         joystick.draw(canvas);
-
     }
-
     public void drawUPS(Canvas canvas){
         String averageUPS = Double.toString(gameLoop.getAverageUPS());
         Paint paint = new Paint();
@@ -93,7 +116,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         paint.setTextSize(50);
         canvas.drawText("UPS: "+ averageUPS,100,40, paint);
     }
-
     public void drawFPS(Canvas canvas){
         String averageFPS = Double.toString(gameLoop.getAverageFPS());
         Paint paint = new Paint();
@@ -103,6 +125,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         canvas.drawText("FPS: "+ averageFPS,100,80, paint);
     }
 
+    /**
+     * this method is called repeately to update the game state
+     * joystick.update() updates the functionality and position of the joystick
+     * joystick.getSideSpeeds() gathers the positioning of the joystick and sends user input to the
+     * MQTT server
+     */
     public void update() {
         if(isConnected){
             joystick.getSideSpeeds();

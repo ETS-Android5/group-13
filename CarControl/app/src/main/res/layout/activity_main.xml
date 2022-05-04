@@ -4,15 +4,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#454545"
     tools:context=".MainActivity">
 
-    <TextView
+    <Button
+        android:id="@+id/ROTATE_LEFT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="32dp"
+        android:background="@null"
+        android:backgroundTint="#303030"
+        android:text="ROTATE LEFT"
+        android:textColor="#DDDDDD"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/ROTATE_RIGHT"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/ROTATE_RIGHT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@null"
+        android:backgroundTint="#303030"
+        android:text="ROTATE RIGHT"
+        android:textColor="#DDDDDD"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ROTATE_LEFT"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/lblSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:background="@null"
+        android:ems="10"
+        android:enabled="false"
+        android:inputType="none"
+        android:text="0 KM/H"
+        android:textAlignment="center"
+        android:textColor="#DDDDDD"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ROTATE_RIGHT" />
+
+    <Button
+        android:id="@+id/CRUISE_CONTROL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@null"
+        android:backgroundTint="#303030"
+        android:text="CRUISE CONTROL"
+        android:textColor="#752929"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lblSpeed" />
+
+    <LinearLayout
+        android:id="@+id/joystick"
+        android:layout_width="0dp"
+        android:layout_height="350dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
