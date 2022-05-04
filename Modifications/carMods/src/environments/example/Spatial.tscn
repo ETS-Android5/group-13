@@ -1,0 +1,173 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://src/environments/example/Greyboxes.tres" type="Material" id=1]
+[ext_resource path="res://src/environments/example/finishline.png" type="Texture" id=2]
+[ext_resource path="res://src/environments/example/finsihlinetext.png" type="Texture" id=3]
+[ext_resource path="res://src/environments/example/DarkGrey.tres" type="Material" id=4]
+[ext_resource path="res://src/environments/example/DarkGreyBoxes.tres" type="Material" id=5]
+
+[sub_resource type="SpatialMaterial" id=1]
+albedo_texture = ExtResource( 2 )
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_texture = ExtResource( 3 )
+
+[node name="Spatial" type="Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -30.9713 )
+
+[node name="CSGCombiner" type="CSGCombiner" parent="."]
+use_in_baked_light = true
+lightmap_scale = 2
+use_collision = true
+
+[node name="CSGBox" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.97042, 0.702066 )
+width = 14.2738
+depth = 107.205
+material = ExtResource( 1 )
+
+[node name="CSGBox3" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.06878, 0.174256, -13.5523 )
+width = 6.0
+depth = 5.0
+material = ExtResource( 4 )
+
+[node name="CSGBox14" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.01925, 0.174256, -26.7952 )
+width = 6.0
+depth = 5.0
+material = ExtResource( 4 )
+
+[node name="CSGBox15" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0658, 0.174256, -39.5433 )
+width = 6.0
+depth = 5.0
+material = ExtResource( 4 )
+
+[node name="CSGBox16" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( -4.2222e-08, 1.13133e-08, 1, 0.258819, 0.965926, 0, -0.965926, 0.258819, -4.37114e-08, -5.02837, 2.0817, -90.0919 )
+width = 5.0
+depth = 4.0
+material = ExtResource( 4 )
+
+[node name="CSGBox17" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( -4.2222e-08, 1.13133e-08, 1, 0.258819, 0.965926, 0, -0.965926, 0.258819, -4.37114e-08, 5.27916, 2.0817, -90.0919 )
+width = 5.0
+depth = 4.0
+material = ExtResource( 4 )
+
+[node name="CSGBox18" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0, 0, 1, 12.5142, 5.68948, -104.925 )
+width = 5.0
+depth = 5.0
+material = ExtResource( 4 )
+
+[node name="CSGBox19" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0, 0, 1, 21.8809, 8.28867, -114.17 )
+width = 5.0
+depth = 5.0
+material = ExtResource( 4 )
+
+[node name="CSGBox2" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.99228, -1.96748, -58.0142 )
+width = 4.22811
+depth = 13.2653
+material = ExtResource( 1 )
+
+[node name="CSGBox4" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.1095, -1.96748, -58.0142 )
+width = 4.22811
+depth = 13.2653
+material = ExtResource( 1 )
+
+[node name="CSGBox5" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.1095, -1.96748, -71.2334 )
+width = 4.22811
+depth = 13.2653
+material = ExtResource( 1 )
+
+[node name="CSGBox6" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.97789, -1.96748, -71.2334 )
+width = 4.22811
+depth = 13.2653
+material = ExtResource( 1 )
+
+[node name="CSGBox7" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.11434, -1.96748, -79.947 )
+width = 4.22811
+depth = 14.3326
+material = ExtResource( 1 )
+
+[node name="CSGBox9" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.11434, 2.63443, -107.946 )
+width = 18.0
+depth = 14.3326
+material = ExtResource( 1 )
+
+[node name="CSGBox8" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( -4.2222e-08, 1.13133e-08, 1, 0.258819, 0.965926, 0, -0.965926, 0.258819, -4.37114e-08, 0.11434, 0.346947, -90.4984 )
+width = 18.0181
+depth = 14.3326
+material = ExtResource( 1 )
+
+[node name="CSGBox10" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 33.6252, 7.27992, -109.546 )
+width = 18.0
+depth = 14.3326
+material = ExtResource( 1 )
+
+[node name="CSGBox11" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 0.965926, -0.258819, 0, 0.258819, 0.965926, 1.77742e-15, -4.60031e-16, -1.71686e-15, 1, 16.1863, 4.98138, -109.557 )
+width = 18.0181
+depth = 14.3326
+material = ExtResource( 1 )
+
+[node name="CSGBox12" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 35.4563, 11.8576, -77.8297 )
+width = 14.5909
+depth = 14.3326
+material = SubResource( 1 )
+
+[node name="CSGBox20" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 42.4793, 16.638, -76.0057 )
+use_in_baked_light = true
+width = 0.5
+height = 8.0
+depth = 0.25
+material = ExtResource( 4 )
+
+[node name="CSGBox21" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 28.429, 16.638, -76.0057 )
+use_in_baked_light = true
+width = 0.5
+height = 8.0
+depth = 0.25
+material = ExtResource( 4 )
+
+[node name="CSGBox22" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( -4.37114e-08, -1, 4.37114e-08, 0, -4.37114e-08, -1, 1, -4.37114e-08, 1.91069e-15, 35.4313, 19.2615, -76.1236 )
+invert_faces = true
+width = 0.25
+height = 14.0978
+depth = 2.18123
+material = SubResource( 2 )
+
+[node name="CSGBox23" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( -4.37114e-08, -1, 4.37114e-08, 0, -4.37114e-08, -1, 1, -4.37114e-08, 1.91069e-15, 35.4313, 19.2615, -75.8543 )
+invert_faces = true
+width = 0.25
+height = 14.0978
+depth = 2.18123
+material = ExtResource( 5 )
+
+[node name="CSGBox13" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1.15185e-08, -3.08638e-09, -1, 0.258819, 0.965926, 1.77742e-15, 0.965926, -0.258819, 1.19249e-08, 35.0715, 9.57266, -93.5532 )
+width = 18.0181
+depth = 5.0
+material = ExtResource( 1 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 0.0808252, 0.996728, 0, -0.996728, 0.0808252, 24.3938, 39.1123, -45.541 )
+light_energy = 1.505
+light_indirect_energy = 0.583
+light_specular = 1.229
