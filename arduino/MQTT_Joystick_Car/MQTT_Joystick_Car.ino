@@ -66,6 +66,10 @@ SmartCar car(arduinoRuntime, control, gyroscope, leftOdometer, rightOdometer);
 // Global Car-Control variables
 boolean blockForward = false;
 boolean blockReverse = false;
+boolean cliffFrontLeft = false;
+boolean cliffFrontRight = false;
+boolean cliffBackLeft = false;
+boolean cliffBackRight = false;
 boolean cruiseControl = false;
 boolean rotateCar = false;
 int carSpeed = 100;
@@ -75,7 +79,7 @@ int rmSpeed = 0;
 
 //Define MQTT Broker
 #ifdef __SMCE__
-const auto mqttBrokerUrl = "test.mosquitto.org";
+const auto mqttBrokerUrl = "broker.hivemq.com";
 #else
 const auto mqttBrokerUrl = "test.mosquitto.org";
 #endif
@@ -114,6 +118,32 @@ void loop() {
  */
 
 void checkSensors() {
+  // Front and Back sensor check
+  collisionDetection();
+  cliffDetection();
+
+  /**
+   * As of now it just stops the car; Here we can call methods to add-in assisted driving (suggestion).
+   */
+  if (carSpeed > 0 && blockForward) {         // If car is moving forward && path is blocked
+    car.setSpeed(0);
+  } else if (carSpeed < 0 && blockReverse) {  // if car is moving backwards and path is blocked
+    car.setSpeed(0);
+  } else if (carSpeed > 0 && cliffFrontLeft) {
+    car.setSpeed(0);
+  } else if (carSpeed > 0 && cliffFrontRight) {
+    car.setSpeed(0);
+  } else if (carSpeed < 0 && cliffBackLeft) {
+    car.setSpeed(0);
+  } else if (carSpeed < 0 && cliffBackRight) {
+    car.setSpeed(0);
+  }
+}
+
+/**
+ * This checks if there's an obstacle infront or behind the car.
+ */
+void collisionDetection() {
   int minDistance = 20;
   int maxDistance = 40;
   int carSpeed = car.getSpeed() * 3.6;
@@ -123,14 +153,19 @@ void checkSensors() {
   // Checks if direction
   blockForward    = (frontSensor > minDistance && frontSensor < maxDistance);
   blockReverse    = (backSensor > minDistance && backSensor < maxDistance);
-
-  
-  if (carSpeed > 0 && blockForward) {         // If car is moving forward && path is blocked
-    car.setSpeed(0);
-  } else if (carSpeed < 0 && blockReverse) {  // if car is moving backwards and path is blocked
-    car.setSpeed(0);
-  }
 }
+
+/**
+ * The side sensors are constantly detecting the ground which means that they will always return a value above 0.
+ * If they detect nothing it means that there is a cliff ahead and we can use that information to avoid cliffs.
+ */
+
+ void cliffDetection() {
+  cliffFrontLeft = frontOuterLeftIR.getDistance() == 0 || fronInnerLeftIR.getDistance() == 0;
+  cliffFrontRight = frontInnerRightIR.getDistance() == 0 || frontOuterRightIR.getDistance() == 0;
+  cliffBackLeft = backInnerLeftIR.getDistance() == 0 || backOuterLeftIR.getDistance() == 0;
+  cliffBackRight = backInnerRightIR.getDistance() == 0 || backOuterRightIR.getDistance() == 0;
+ }
 
 /**
    Set the speed of left/right motor of car.
@@ -142,10 +177,10 @@ void setSpeed(String motor, int newSpeed) {
   lmSpeed = rmSpeed = 0;
   rotateCar = false;
   // changing left motor speed and direction of movement is NOT blocked by sensors:
-  if (motor == leftMotorSpeed && ((newSpeed > 0 && !blockForward) || (newSpeed < 0 && !blockReverse))) {
+  if (motor == leftMotorSpeed && ((newSpeed > 0 && !blockForward && !cliffFrontLeft && !cliffFrontRight) || (newSpeed < 0 && !blockReverse && cliffBackLeft && !cliffBackRight))) {
     leftMotor.setSpeed(newSpeed);
     // changing right motor speed and direction of movement is NOT blocked by sensors:
-  } else if (motor == rightMotorSpeed && ((newSpeed > 0 && !blockForward) || (newSpeed < 0 && !blockReverse))) {
+  } else if (motor == rightMotorSpeed && ((newSpeed > 0 && !blockForward && !cliffFrontLeft && !cliffFrontRight) || (newSpeed < 0 && !blockReverse && cliffBackLeft && !cliffBackRight))) {
     rightMotor.setSpeed(newSpeed);
   } else {
     leftMotor.setSpeed(0);
