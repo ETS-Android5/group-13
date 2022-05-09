@@ -60,31 +60,61 @@ transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, -0.7
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.502, 0 )
 
 [node name="Front" parent="AttachmentSlots" index="0"]
-transform = Transform( 1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0.5, -2.15 )
+transform = Transform( 1, 0, 0, 0, 0.866026, 0.5, 0, -0.5, 0.866026, 0, 0.5, -2.15 )
 
 [node name="FrontInnerLeft" parent="AttachmentSlots" index="1"]
-transform = Transform( 0.965926, -0.0885213, 0.24321, 0, 0.939693, 0.34202, -0.258819, -0.330366, 0.907674, -1, 0.5, -2.15 )
+transform = Transform( 0.965926, -0.12941, 0.224144, 0, 0.866026, 0.5, -0.258819, -0.482963, 0.836517, -1, 0.5, -2.15 )
 
 [node name="FrontOuterLeft" parent="AttachmentSlots" index="2"]
-transform = Transform( 0.707107, -0.241845, 0.664463, 0, 0.939693, 0.34202, -0.707107, -0.241845, 0.664463, -1.7, 0.5, -1.8 )
+transform = Transform( 0.707107, -0.353554, 0.612372, 0, 0.866026, 0.5, -0.707107, -0.353554, 0.612372, -1.7, 0.5, -1.8 )
 
 [node name="FrontInnerRight" parent="AttachmentSlots" index="3"]
-transform = Transform( 0.965926, 0.0885213, -0.24321, 0, 0.939693, 0.34202, 0.258819, -0.330366, 0.907674, 1, 0.5, -2.15 )
+transform = Transform( 0.965926, 0.12941, -0.224144, 0, 0.866026, 0.5, 0.258819, -0.482963, 0.836517, 1, 0.5, -2.15 )
 
 [node name="FrontOuterRight" parent="AttachmentSlots" index="4"]
-transform = Transform( 0.707107, 0.241845, -0.664463, 0, 0.939693, 0.34202, 0.707107, -0.241845, 0.664463, 1.7, 0.5, -1.8 )
+transform = Transform( 0.707107, 0.353554, -0.612372, 0, 0.866026, 0.5, 0.707107, -0.353554, 0.612372, 1.7, 0.5, -1.8 )
 
-[node name="Back" parent="AttachmentSlots" index="9"]
-transform = Transform( -1, 5.16436e-08, -1.4189e-07, 0, 0.939693, 0.34202, 1.50996e-07, 0.34202, -0.939693, 0, 0.5, 2.15 )
+[node name="FrontStraight" type="Position3D" parent="AttachmentSlots" index="5"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -2.15 )
 
-[node name="BackInnerRight" parent="AttachmentSlots" index="10"]
-transform = Transform( -0.965926, 0.0885213, -0.24321, 0, 0.939693, 0.34202, 0.258819, 0.330366, -0.907674, 1, 0.5, 2.15 )
+[node name="FrontStraightInnerLeft" type="Position3D" parent="AttachmentSlots" index="6"]
+transform = Transform( 0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -1, 0.5, -2.15 )
 
-[node name="BackOuterRight" parent="AttachmentSlots" index="11"]
-transform = Transform( -0.707107, 0.241845, -0.664463, 0, 0.939693, 0.34202, 0.707107, 0.241845, -0.664463, 1.7, 0.5, 1.8 )
+[node name="FrontStraightOuterLeft" type="Position3D" parent="AttachmentSlots" index="7"]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -1.7, 0.5, -1.8 )
 
-[node name="BackInnerLeft" parent="AttachmentSlots" index="12"]
-transform = Transform( -0.965926, -0.0885213, 0.24321, 0, 0.939693, 0.34202, -0.258819, 0.330366, -0.907674, -1, 0.5, 2.15 )
+[node name="FrontStraightInnerRight" type="Position3D" parent="AttachmentSlots" index="8"]
+transform = Transform( 0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 1, 0.5, -2.15 )
 
-[node name="BackOuterLeft" parent="AttachmentSlots" index="13"]
-transform = Transform( -0.707107, -0.241845, 0.664463, 0, 0.939693, 0.34202, -0.707107, 0.241845, -0.664463, -1.7, 0.5, 1.8 )
+[node name="FrontStraightOuterRight" type="Position3D" parent="AttachmentSlots" index="9"]
+transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 1.7, 0.5, -1.8 )
+
+[node name="BackStraight" type="Position3D" parent="AttachmentSlots" index="10"]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.5, 2.15 )
+
+[node name="BackStraightInnerRight" type="Position3D" parent="AttachmentSlots" index="11"]
+transform = Transform( -0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, -0.965926, 1, 0.5, 2.15 )
+
+[node name="BackStraightInnerLeft" type="Position3D" parent="AttachmentSlots" index="12"]
+transform = Transform( -0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, -0.965926, -1, 0.5, 2.15 )
+
+[node name="BackStraightOuterLeft" type="Position3D" parent="AttachmentSlots" index="13"]
+transform = Transform( -0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, -1.7, 0.5, 1.8 )
+
+[node name="BackStraightOuterRight" type="Position3D" parent="AttachmentSlots" index="14"]
+transform = Transform( -0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 1.7, 0.5, 1.8 )
+
+[node name="Back" parent="AttachmentSlots" index="19"]
+transform = Transform( -1, 7.54979e-08, -1.30766e-07, 0, 0.866026, 0.5, 1.50996e-07, 0.5, -0.866026, 0, 0.5, 2.15 )
+
+[node name="BackInnerRight" parent="AttachmentSlots" index="20"]
+transform = Transform( -0.965926, 0.129409, -0.224144, 0, 0.866026, 0.5, 0.258819, 0.482963, -0.836517, 1, 0.5, 2.15 )
+
+[node name="BackOuterRight" parent="AttachmentSlots" index="21"]
+transform = Transform( -0.707107, 0.353554, -0.612372, 0, 0.866026, 0.5, 0.707107, 0.353554, -0.612372, 1.7, 0.5, 1.8 )
+
+[node name="BackInnerLeft" parent="AttachmentSlots" index="22"]
+transform = Transform( -0.965926, -0.129409, 0.224144, 0, 0.866026, 0.5, -0.258819, 0.482963, -0.836517, -1, 0.5, 2.15 )
+
+[node name="BackOuterLeft" parent="AttachmentSlots" index="23"]
+transform = Transform( -0.707107, -0.353554, 0.612372, 0, 0.866026, 0.5, -0.707107, 0.353554, -0.612372, -1.7, 0.5, 1.8 )
