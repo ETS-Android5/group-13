@@ -92,12 +92,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN && rotatingLeft == false) {
-                    mMqttClient.publish("DIT133Group13/RotateLeft", "1", 1,null);
+                    mMqttClient.publish("DIT133Group13/RotateLeft", "1", 1, null);
                     rotatingLeft = true;
                     rotatingRight = false;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    mMqttClient.publish("DIT133Group13/RotateLeft", "0", 1,null);
-                    rotatingLeft = false;
+                    for(int i = 0; i < 10; i++) {
+                        mMqttClient.publish("DIT133Group13/RotateLeft", "0", 1, null);
+                    }
+                    rotatingRight = rotatingLeft = false;
                 }
                 return false;
             }
@@ -111,8 +113,10 @@ public class MainActivity extends AppCompatActivity {
                     rotatingRight = true;
                     rotatingLeft = false;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    mMqttClient.publish("DIT133Group13/RotateRight", "0", 1, null);
-                    rotatingRight = false;
+                    for(int i = 0; i < 10; i++) {
+                        mMqttClient.publish("DIT133Group13/RotateRight", "0", 1, null);
+                    }
+                    rotatingRight = rotatingLeft = false;
                 }
 
                 return false;
@@ -240,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
                  */
                 @Override
                 public void deliveryComplete(IMqttDeliveryToken token) {
-                    //Log.d(TAG, "Message delivered");
+                    Log.d(TAG, "Message delivered");
                 }
             });
         }

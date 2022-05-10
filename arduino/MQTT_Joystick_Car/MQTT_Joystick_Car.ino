@@ -26,6 +26,16 @@ const auto BACK_INNER_LEFT_IR_PIN = 50;
 const auto BACK_OUTER_LEFT_IR_PIN = 51;
 const auto BACK_INNER_RIGHT_IR_PIN = 52;
 const auto BACK_OUTER_RIGHT_IR_PIN = 53;
+const auto FRONT_STRAIGHT_IR_PIN = 44;
+const auto FRONT_STRAIGHT_INNER_LEFT_IR_PIN = 45;
+const auto FRONT_STRAIGHT_OUTER_LEFT_IR_PIN = 46;
+const auto FRONT_STRAIGHT_INNER_RIGHT_IR_PIN = 47;
+const auto FRONT_STRAIGHT_OUTER_RIGHT_IR_PIN = 48;
+const auto BACK_STRAIGHT_IR_PIN = 54;
+const auto BACK_STRAIGHT_INNER_LEFT_IR_PIN = 55;
+const auto BACK_STRAIGHT_OUTER_LEFT_IR_PIN = 56;
+const auto BACK_STRAIGHT_OUTER_RIGHT_IR_PIN = 57;
+const auto BACK_STRAIGHT_INNER_RIGHT_IR_PIN = 58;
 
 // Topic keywords
 const String leftMotorSpeed = "DIT133Group13/LeftSpeed";
@@ -51,7 +61,7 @@ GP2D120 frontIR(arduinoRuntime, FRONT_IR_PIN); // measure distances between 5 an
 GP2D120 backIR(arduinoRuntime, BACK_IR_PIN);
 GP2D120 leftIR(arduinoRuntime, LEFT_IR_PIN);
 GP2D120 rightIR(arduinoRuntime, RIGHT_IR_PIN);
-GP2D120 fronInnerLeftIR(arduinoRuntime, FRONT_INNER_LEFT_IR_PIN);
+GP2D120 frontInnerLeftIR(arduinoRuntime, FRONT_INNER_LEFT_IR_PIN);
 GP2D120 frontOuterLeftIR(arduinoRuntime, FRONT_OUTER_LEFT_IR_PIN);
 GP2D120 frontInnerRightIR(arduinoRuntime, FRONT_INNER_RIGHT_IR_PIN);
 GP2D120 frontOuterRightIR(arduinoRuntime, FRONT_OUTER_RIGHT_IR_PIN);
@@ -59,25 +69,38 @@ GP2D120 backInnerLeftIR(arduinoRuntime, BACK_INNER_LEFT_IR_PIN);
 GP2D120 backOuterLeftIR(arduinoRuntime, BACK_OUTER_LEFT_IR_PIN);
 GP2D120 backInnerRightIR(arduinoRuntime, BACK_INNER_RIGHT_IR_PIN);
 GP2D120 backOuterRightIR(arduinoRuntime, BACK_OUTER_RIGHT_IR_PIN);
+GP2D120 frontStraightIR(arduinoRuntime, FRONT_STRAIGHT_IR_PIN);
+GP2D120 frontStraightInnerLeftIR(arduinoRuntime, FRONT_STRAIGHT_INNER_LEFT_IR_PIN);
+GP2D120 frontStraightOuterLeftIR(arduinoRuntime, FRONT_STRAIGHT_OUTER_LEFT_IR_PIN);
+GP2D120 frontStraightInnerRightIR(arduinoRuntime, FRONT_STRAIGHT_INNER_RIGHT_IR_PIN);
+GP2D120 frontStraightOuterRightIR(arduinoRuntime, FRONT_STRAIGHT_OUTER_RIGHT_IR_PIN);
+GP2D120 backStraightIR(arduinoRuntime, BACK_STRAIGHT_IR_PIN);
+GP2D120 backStraightInnerLeftIR(arduinoRuntime, BACK_STRAIGHT_INNER_LEFT_IR_PIN);
+GP2D120 backStraightOuterLeftIR(arduinoRuntime, BACK_STRAIGHT_OUTER_LEFT_IR_PIN);
+GP2D120 backStraightInnerRightIR(arduinoRuntime, BACK_STRAIGHT_OUTER_RIGHT_IR_PIN);
+GP2D120 backStraightOuterRightIR(arduinoRuntime, BACK_STRAIGHT_INNER_RIGHT_IR_PIN);
 
 // Create car object and apply all modules.
 SmartCar car(arduinoRuntime, control, gyroscope, leftOdometer, rightOdometer);
 
 // Global Car-Control variables
-boolean blockForward = false;
-boolean blockReverse = false;
-boolean cruiseControl = false;
-boolean rotateCar = false;
-int carSpeed = 100;
-int lmSpeed = 0;
-int rmSpeed = 0;
+boolean blockForward = false; // Prevents moving forward
+boolean blockReverse = false; // Prevents reversing
+boolean cliffFrontLeft = false; // Cliff detected on car's front - left side
+boolean cliffFrontRight = false; // Cliff detected on car's front - right side
+boolean cliffBackLeft = false; // Cliff detected on car's back - left side
+boolean cliffBackRight = false; // Cliff detected on car's back - right side
+boolean cruiseControl = false; // Cruise control on or off
+boolean rotateCar = false; // Is car currently rotating
+int lmSpeed = 0; // Current left motorspeed
+int rmSpeed = 0; // Current right motorspeed
 
 
 //Define MQTT Broker
 #ifdef __SMCE__
-const auto mqttBrokerUrl = "test.mosquitto.org";
+const auto mqttBrokerUrl = "broker.hivemq.com";
 #else
-const auto mqttBrokerUrl = "test.mosquitto.org";
+const auto mqttBrokerUrl = "Bobman.free.mqttserver.eu";
 #endif
 const auto maxDistance = 400;
 
@@ -105,7 +128,7 @@ void loop() {
 
   // Avoid over-using the CPU if we are running in the emulator
 #ifdef __SMCE__
-  delay(35);
+  delay(1);
 #endif
 }
 
@@ -114,23 +137,64 @@ void loop() {
  */
 
 void checkSensors() {
+  // Front and Back sensor check
+  collisionDetection();
+  cliffDetection();
+  //Serial.println(lmSpeed);
+  //Serial.println(rmSpeed);
+  /**
+   * When the car tries to move towards an obstacle it will be stopped:
+   * When the car is about to drive off a cliff it will be stopped
+   * When the car is about to turn off a cliff an opposite turn will be forced
+   * This only applies when the user is driving the car, thus Rotating the car is not affected.
+   */
+   if(!rotateCar)  {
+    if (lmSpeed+rmSpeed > 0 && blockForward) {         // If car is moving forward && path is blocked or cliff
+      Serial.println("BLOCKING FORWARD: straightForwardIR or frontIR");
+      car.setSpeed(0);
+    } else if (lmSpeed+rmSpeed < 0 && blockReverse) {  // if car is moving backwards and path is blocked or cliff
+      Serial.println("BLOCKING REVERSE: straightBackIR or backIR");
+      car.setSpeed(0);
+    } else if (((cliffFrontLeft != cliffFrontRight) && (rmSpeed > 0 && cliffFrontLeft)) || (cliffBackLeft != cliffBackRight && (rmSpeed < 0 && cliffBackLeft))) { // Turns right car to avoid cliff
+      rightMotor.setSpeed(0);
+      lmSpeed /= 4;
+      Serial.println("FORCING RIGHT TURN: CliffFrontLeft or cliffBackLeft");
+    } else if (((cliffFrontLeft != cliffFrontRight) && (lmSpeed > 0 && cliffFrontRight)) || (cliffBackLeft != cliffBackRight && (lmSpeed < 0 && cliffBackRight))) { // Turns car left to avoid cliff
+      leftMotor.setSpeed(0);
+      rmSpeed /= 4;
+      Serial.println("FORCING LEFT TURN: cliffFrontRight or cliffBackRight");
+    }
+   }
+}
+
+/**
+ * This checks if there's an obstacle infront or behind the car.
+ */
+void collisionDetection() {
   int minDistance = 20;
   int maxDistance = 40;
   int carSpeed = car.getSpeed() * 3.6;
-  int frontSensor = frontIR.getDistance();
-  int backSensor = backIR.getDistance();
+  int frontSensor = frontStraightIR.getDistance();
+  int backSensor = backStraightIR.getDistance();
   
   // Checks if direction
   blockForward    = (frontSensor > minDistance && frontSensor < maxDistance);
   blockReverse    = (backSensor > minDistance && backSensor < maxDistance);
-
-  
-  if (carSpeed > 0 && blockForward) {         // If car is moving forward && path is blocked
-    car.setSpeed(0);
-  } else if (carSpeed < 0 && blockReverse) {  // if car is moving backwards and path is blocked
-    car.setSpeed(0);
-  }
 }
+
+/**
+ * The side sensors are constantly detecting the ground which means that they will always return a value above 0.
+ * If they detect nothing it means that there is a cliff ahead and we can use that information to avoid cliffs.
+ */
+
+ void cliffDetection() {
+  cliffFrontLeft = frontOuterLeftIR.getDistance() == 0 || frontInnerLeftIR.getDistance() == 0;
+  cliffFrontRight = frontOuterRightIR.getDistance() == 0 || frontInnerRightIR.getDistance() == 0;
+  cliffBackLeft = backOuterLeftIR.getDistance() == 0 || backInnerLeftIR.getDistance() == 0;
+  cliffBackRight = backOuterRightIR.getDistance() == 0 || backInnerRightIR.getDistance() == 0;
+  blockForward = blockForward || (frontIR.getDistance() == 0);
+  blockReverse = blockReverse || (backIR.getDistance() == 0);
+ }
 
 /**
    Set the speed of left/right motor of car.
@@ -142,14 +206,16 @@ void setSpeed(String motor, int newSpeed) {
   lmSpeed = rmSpeed = 0;
   rotateCar = false;
   // changing left motor speed and direction of movement is NOT blocked by sensors:
-  if (motor == leftMotorSpeed && ((newSpeed > 0 && !blockForward) || (newSpeed < 0 && !blockReverse))) {
+  if (motor == leftMotorSpeed && ((newSpeed > 0 && !blockForward) || (newSpeed < 0 && !blockReverse) || newSpeed == 0)) {
     leftMotor.setSpeed(newSpeed);
+    lmSpeed = newSpeed;
     // changing right motor speed and direction of movement is NOT blocked by sensors:
-  } else if (motor == rightMotorSpeed && ((newSpeed > 0 && !blockForward) || (newSpeed < 0 && !blockReverse))) {
+  } else if (motor == rightMotorSpeed && ((newSpeed > 0 && !blockForward) || (newSpeed < 0 && !blockReverse) || newSpeed == 0)) {
     rightMotor.setSpeed(newSpeed);
+    rmSpeed = newSpeed;
   } else {
-    leftMotor.setSpeed(0);
-    rightMotor.setSpeed(0);
+    //leftMotor.setSpeed(0);
+    //rightMotor.setSpeed(0);
   }
 }
 
@@ -158,7 +224,7 @@ void setSpeed(String motor, int newSpeed) {
 */
 
 void stillStandingRotation(String direction, int toggle) {
-  rotateCar = (toggle == 1 && car.getSpeed() < 0.2 && car.getSpeed() > -0.2 ? true : false);
+  rotateCar = (toggle == 1 && lmSpeed + rmSpeed == 0);
   if (rotateCar && direction == rotateLeft) {
     lmSpeed = -50;
     rmSpeed = 50;
@@ -166,9 +232,9 @@ void stillStandingRotation(String direction, int toggle) {
     lmSpeed = 50;
     rmSpeed = -50;
   } else { // Stops rotation.
-    lmSpeed = 0;
-    rmSpeed = 0;
-    car.overrideMotorSpeed(lmSpeed, rmSpeed);
+    //lmSpeed = 0;
+    //rmSpeed = 0;
+    car.overrideMotorSpeed(0, 0);
   }
 }
 
@@ -235,8 +301,9 @@ void setup() {
 
   mqtt.onMessage([](String topic, String message) {
 
-    // If the topic sent is regarding motor-speed
-    if ((topic == leftMotorSpeed || topic == rightMotorSpeed)) {
+    // If the topic sent is regarding motor-speed and the car is not currently rotating.
+    // The rotationcheck is added since we're constantly sending the car's speed, even if it is 0.
+    if (!rotateCar && (topic == leftMotorSpeed || topic == rightMotorSpeed)) {
       setSpeed(topic, message.toInt());
     } else if (topic == keepSpeed) { // If message is togggling cruisecontrol
       toggleCruiseControl();

@@ -87,7 +87,6 @@ public class Joystick {
             mMqttClient.publish("DIT133Group13/LeftSpeed", Double.toString(LeftSpeed), 1, null);
             mMqttClient.publish("DIT133Group13/RightSpeed", Double.toString(RightSpeed), 1, null);
 
-        System.out.println("left: "+ LeftSpeed + " right: "+ RightSpeed);
     }
 
     /**
