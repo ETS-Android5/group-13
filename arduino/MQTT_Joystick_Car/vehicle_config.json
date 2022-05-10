@@ -35,6 +35,41 @@
          "props": {
             "pin": 43
          }
+	  },
+	  "FrontStraight": {
+         "class": "AnalogRaycast",
+         "name": "Front Straight Infrared",
+         "props": {
+            "pin": 44
+         }
+	  },
+	  "FrontStraightInnerLeft": {
+         "class": "AnalogRaycast",
+         "name": "Front Straight Inner Left Infrared",
+         "props": {
+            "pin": 45
+         }
+	  },
+	  "FrontStraightOuterLeft": {
+         "class": "AnalogRaycast",
+         "name": "Front Straight Outer Left Infrared",
+         "props": {
+            "pin": 46
+         }
+	  },
+	  "FrontStraightInnerRight": {
+         "class": "AnalogRaycast",
+         "name": "Front Straight Inner Right Infrared",
+         "props": {
+            "pin": 47
+         }
+	  },
+	  "FrontStraightOuterRight": {
+         "class": "AnalogRaycast",
+         "name": "Front Straight Outer Right Infrared",
+         "props": {
+            "pin": 48
+         }
       },
       "Front2": {
          "class": "Camera",
@@ -95,6 +130,41 @@
          "name": "Back Outer Right Infrared",
          "props": {
             "pin": 53
+         }
+      },
+	  "BackStraight": {
+         "class": "AnalogRaycast",
+         "name": "Back Straight Infrared",
+         "props": {
+            "pin": 54
+         }
+      },
+	  "BackStraightInnerLeft": {
+         "class": "AnalogRaycast",
+         "name": "Back Straight Inner Left Infrared",
+         "props": {
+            "pin": 55
+         }
+      },
+	  "BackStraightOuterLeft": {
+         "class": "AnalogRaycast",
+         "name": "Back Straight Outer Left Infrared",
+         "props": {
+            "pin": 56
+         }
+      },
+	  "BackStraightInnerRight": {
+         "class": "AnalogRaycast",
+         "name": "Back Straight Inner Right Infrared",
+         "props": {
+            "pin": 57
+         }
+      },
+	  "BackStraightOuterRight": {
+         "class": "AnalogRaycast",
+         "name": "Back Straight Outer Right Infrared",
+         "props": {
+            "pin": 58
          }
       }
    },
