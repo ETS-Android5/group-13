@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
                  */
                 @Override
                 public void deliveryComplete(IMqttDeliveryToken token) {
-                    //Log.d(TAG, "Message delivered");
+                    Log.d(TAG, "Message delivered");
                 }
             });
         }
