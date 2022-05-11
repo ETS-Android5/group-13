@@ -43,6 +43,8 @@ const String rightMotorSpeed = "DIT133Group13/RightSpeed";
 const String keepSpeed = "DIT133Group13/CruiseControl";
 const String rotateLeft = "DIT133Group13/RotateLeft";
 const String rotateRight = "DIT133Group13/RotateRight";
+const String FindRight = "DIT133Group13/FindRight";
+const String FindLeft = "DIT133Group13/FindLeft";
 
 
 //instantiation of car components
@@ -98,7 +100,7 @@ int rmSpeed = 0; // Current right motorspeed
 
 //Define MQTT Broker
 #ifdef __SMCE__
-const auto mqttBrokerUrl = "broker.hivemq.com";
+const auto mqttBrokerUrl = "broker.emqx.io";
 #else
 const auto mqttBrokerUrl = "Bobman.free.mqttserver.eu";
 #endif
@@ -258,6 +260,26 @@ void maintainSpeed() {
   }
 }
 
+void findPath(String Side){
+    if (Side == FindLeft){
+      while(frontStraightIR.getDistance() != 0 || frontStraightInnerRightIR.getDistance() != 0 || frontStraightInnerLeftIR.getDistance() != 0 || frontStraightOuterRightIR.getDistance() != 0 || frontStraightOuterLeftIR.getDistance() != 0){
+        leftMotor.setSpeed(-10);
+        rightMotor.setSpeed(10);
+        }
+    } 
+    else if(Side == FindRight){
+      while(frontStraightIR.getDistance() != 0 || frontStraightInnerRightIR.getDistance() != 0 || frontStraightInnerLeftIR.getDistance() != 0){
+        leftMotor.setSpeed(10);
+        rightMotor.setSpeed(-10);
+        }
+    }
+    delay(550);
+    leftMotor.setSpeed(0);
+    rightMotor.setSpeed(0);
+    Serial.println("path found");
+    
+}
+
 //method to set up the car, MQTT client, wifi connection and MQTT message handling
 void setup() {
   Serial.begin(9600);
@@ -309,7 +331,10 @@ void setup() {
       toggleCruiseControl();
     } else if (topic == rotateLeft || topic == rotateRight) { // If message is toggling rotations
       stillStandingRotation(topic, message.toInt());
-    }
+    } else if (topic == FindLeft || topic == FindRight){
+      Serial.println("finding path");
+      findPath(topic);
+      }
   });
 
   // Keep emulator from overloading.

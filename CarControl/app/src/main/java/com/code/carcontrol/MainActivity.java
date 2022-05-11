@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         The following attributes are used for the MQTT connection
      */
     private static final String TAG = "SmartcarMqttController";
-    private static final String EXTERNAL_MQTT_BROKER = "broker.hivemq.com";
+    private static final String EXTERNAL_MQTT_BROKER = "broker.emqx.io";
     private static final String PORT = ":1883";
     private static final String MQTT_SERVER = ("tcp://" + EXTERNAL_MQTT_BROKER + PORT);
     /*
@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     Button rotateLeft;
     Button rotateRight;
     Button cruiseControl;
+    Button findLeftPath;
+    Button findRightPath;
 
     private boolean rotatingRight = false;
     private boolean rotatingLeft  = false;
@@ -87,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
          rotateLeft = (Button)findViewById(R.id.ROTATE_LEFT);
          rotateRight = (Button)findViewById(R.id.ROTATE_RIGHT);
          cruiseControl = (Button)findViewById(R.id.CRUISE_CONTROL);
+         findLeftPath = (Button)findViewById(R.id.FindLeftPath);
+         findRightPath = (Button)findViewById(R.id.FindRightPath);
 
         rotateLeft.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -134,6 +138,18 @@ public class MainActivity extends AppCompatActivity {
                     cruiseControl.setTextColor(Color.rgb(75,29,29));
                     mMqttClient.publish("DIT133Group13/CruiseControl", "0", 1,null);
                 }
+            }
+        });
+        findLeftPath.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMqttClient.publish("DIT133Group13/FindLeft", "0", 1,null);
+            }
+        });
+        findRightPath.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMqttClient.publish("DIT133Group13/FindRight", "0", 1,null);
             }
         });
     }

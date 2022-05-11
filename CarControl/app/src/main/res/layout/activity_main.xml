@@ -39,7 +39,7 @@
         android:id="@+id/lblSpeed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="12dp"
         android:background="@null"
         android:ems="10"
         android:enabled="false"
@@ -49,6 +49,7 @@
         android:textColor="#DDDDDD"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.545"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ROTATE_RIGHT" />
 
@@ -56,13 +57,44 @@
         android:id="@+id/CRUISE_CONTROL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="12dp"
         android:background="@null"
         android:backgroundTint="#303030"
         android:text="CRUISE CONTROL"
         android:textColor="#752929"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lblSpeed" />
+
+    <Button
+        android:id="@+id/FindRightPath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:background="@null"
+        android:backgroundTint="#303030"
+        android:text="Find Right Path"
+        android:textColor="#DDDDDD"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.937"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lblSpeed" />
+
+    <Button
+        android:id="@+id/FindLeftPath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:background="@null"
+        android:backgroundTint="#303030"
+        android:text="Find Left Path"
+        android:textColor="#DDDDDD"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.024"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lblSpeed" />
 
