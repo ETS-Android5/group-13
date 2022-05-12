@@ -24,6 +24,10 @@ transform = Transform( 1, 0, 0, 0, 0.857068, 0.515203, 0, -0.515203, 0.857068, 0
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.43834, -1.89372, -6.42153 )
 mesh = ExtResource( 2 )
 material/0 = null
+material/1 = null
+material/2 = null
+material/3 = null
+material/4 = null
 
 [node name="StaticBody" type="StaticBody" parent="gamlestaden"]
 
