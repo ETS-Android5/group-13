@@ -1,0 +1,20 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/gamlestaden.obj-644e96e6cc1cfacf9a81b3b4e9b50183.mesh"
+
+[deps]
+
+files=[ "res://.import/gamlestaden.obj-644e96e6cc1cfacf9a81b3b4e9b50183.mesh" ]
+
+source_file="res://src/environments/example/gamlestaden.obj"
+dest_files=[ "res://.import/gamlestaden.obj-644e96e6cc1cfacf9a81b3b4e9b50183.mesh", "res://.import/gamlestaden.obj-644e96e6cc1cfacf9a81b3b4e9b50183.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286

@@ -70,3 +70,4 @@ google-services.json
 *.hprof
 Modifications/carMods/export_presets.cfg
 Modifications/carMods/.import/.gdignore
+Modifications/carMods/.import/
