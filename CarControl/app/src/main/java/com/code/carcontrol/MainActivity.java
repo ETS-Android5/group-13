@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         The following attributes are used for the MQTT connection
      */
     private static final String TAG = "SmartcarMqttController";
-    private static final String EXTERNAL_MQTT_BROKER = "broker.emqx.io";
+    private static final String EXTERNAL_MQTT_BROKER = "10.0.2.2";
     private static final String PORT = ":1883";
     private static final String MQTT_SERVER = ("tcp://" + EXTERNAL_MQTT_BROKER + PORT);
     /*

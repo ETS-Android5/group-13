@@ -99,29 +99,20 @@ int rmSpeed = 0; // Current right motorspeed
 
 
 //Define MQTT Broker
-#ifdef __SMCE__
-const auto mqttBrokerUrl = "broker.emqx.io";
-#else
-const auto mqttBrokerUrl = "Bobman.free.mqttserver.eu";
-#endif
+const auto mqttBrokerUrl = "127.0.0.1";
 const auto maxDistance = 400;
 
 // For camera?
 std::vector<char> frameBuffer;
 
 
-
+// Repeat the loop while the program is running
 void loop() {
 
-  // put your main code here, to run repeatedly:
   if (mqtt.connected()) {
     mqtt.loop();
   }
 
-  if (!mqtt.connected()) {
-    mqtt.connect("arduino", "public", "public");
-    mqtt.subscribe("DIT133Group13/#", 1);
-  }
   // Verify cars surroundings
   checkSensors();
 
@@ -175,11 +166,11 @@ void checkSensors() {
 void collisionDetection() {
   int minDistance = 20;
   int maxDistance = 40;
-  int carSpeed = car.getSpeed() * 3.6;
+  int carSpeed = car.getSpeed() * 3.6; // The car moves 1 meter per second (3.6 km/h = 1 m/s)
   int frontSensor = frontStraightIR.getDistance();
   int backSensor = backStraightIR.getDistance();
   
-  // Checks if direction
+  // Checks if there is an obstacle front or back
   blockForward    = (frontSensor > minDistance && frontSensor < maxDistance);
   blockReverse    = (backSensor > minDistance && backSensor < maxDistance);
 }
