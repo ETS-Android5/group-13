@@ -1,4 +1,12 @@
 # Group-13
+### Development Team
+- [Jonathan Bergdahl](https://github.com/jonathanb00)
+- [Juan García Díaz](https://github.com/JuanDoesCoding)
+- [Kristofer Koskunen](https://github.com/K0ssu)
+- [Mijin Kim](https://github.com/mezyn)
+- [Adam Ekwall](https://github.com/AdamEkwall)
+- [William Hilmersson](https://github.com/bobman97)
+
 ### What you are going to make?
 Our goal as a team is to produce a software prototype capable of obstacle and cliff avoidance for a manual control car, also described as "Assisted driving". In order to test and develop the prototype we are going to make use of the SMCE emulator, as well as the software app Godot to produce maps to make extensive testing for our software solution. As another extra deliverable, and with the goal of having better controls of the car, we plan to make a more swift controlling system, made either by responsive, Non-Serial W-A-S-D controls, or with the use of a joystick.
 
