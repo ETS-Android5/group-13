@@ -45,7 +45,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         //joystick = new Joystick(1100, 450, 300, 200); OLD
 
         // This places the joystick in the center position of the smaller LinearView
-        joystick = new Joystick(550, 500, 300, 200);
+        joystick = new Joystick(550, 500, 300, 200, false);
         setFocusable(true);
     }
 
