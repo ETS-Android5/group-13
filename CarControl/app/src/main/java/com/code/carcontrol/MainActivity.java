@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -14,7 +12,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -42,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int IMAGE_WIDTH = 320;
     private static final int IMAGE_HEIGHT = 240;
 
-    /*ö
+    /*
         The following attributes are used for the publishing of messages and reconnection to the
         server if needed
      */
@@ -58,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean rotatingRight = false;
     private boolean rotatingLeft  = false;
     private boolean cruiseControlToggled = false;
+
 
     //creates the surface, client connection, window and sets the content on screen
     @Override
@@ -86,11 +84,12 @@ public class MainActivity extends AppCompatActivity {
         //setContentView(new Game(this)); old game joystick only
 
         connectToMqttBroker();
-         rotateLeft = (Button)findViewById(R.id.ROTATE_LEFT);
-         rotateRight = (Button)findViewById(R.id.ROTATE_RIGHT);
-         cruiseControl = (Button)findViewById(R.id.CRUISE_CONTROL);
-         findLeftPath = (Button)findViewById(R.id.FindLeftPath);
-         findRightPath = (Button)findViewById(R.id.FindRightPath);
+
+        rotateLeft = (Button)findViewById(R.id.ROTATE_LEFT);
+        rotateRight = (Button)findViewById(R.id.ROTATE_RIGHT);
+        cruiseControl = (Button)findViewById(R.id.CRUISE_CONTROL);
+        findLeftPath = (Button)findViewById(R.id.FindLeftPath);
+        findRightPath = (Button)findViewById(R.id.FindRightPath);
 
         rotateLeft.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -184,11 +183,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public Context getContext(){
+        return this;
+    }
+
     /**
      * Method to connect to the MQTT broker
      */
 
-    private void connectToMqttBroker() {
+    public void connectToMqttBroker() {
         if (!isConnected) {
             mMqttClient.connect(TAG, "", new IMqttActionListener() {
                 /**
@@ -202,7 +205,6 @@ public class MainActivity extends AppCompatActivity {
                     final String successfulConnection = "Connected to MQTT broker";
                     Log.i(TAG, successfulConnection);
                     Toast.makeText(getApplicationContext(), successfulConnection, Toast.LENGTH_SHORT).show();
-
                     //mMqttClient.subscribe("/smartcar/ultrasound/front", QOS, null);
                     //mMqttClient.subscribe("/smartcar/camera", QOS, null);
                 }
