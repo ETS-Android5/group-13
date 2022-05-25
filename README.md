@@ -7,26 +7,38 @@
 - [Adam Ekwall](https://github.com/AdamEkwall)
 - [William Hilmersson](https://github.com/bobman97)
 
-### What you are going to make?
-Our goal as a team is to produce a software prototype capable of obstacle and cliff avoidance for a manual control car, also described as "Assisted driving". In order to test and develop the prototype we are going to make use of the SMCE emulator, as well as the software app Godot to produce maps to make extensive testing for our software solution. As another extra deliverable, and with the goal of having better controls of the car, we plan to make a more swift controlling system, made either by responsive, Non-Serial W-A-S-D controls, or with the use of a joystick.
+### What is SnailCar?
+Our goal as a team was to produce a software prototype capable of obstacle and cliff avoidance for a manual control car, also described as "Assisted driving". In order to test and develop the prototype we have made we have created a realistic map setting for the SMCE emulator that features elements that will allow the user to test all the assisted driving features. The car is controlled by a joystick from an android application which features an intuitive and user-friendly design. 
 
-### Why will you make it?
-Assisted driving is a great way to test all the capabilities of the car, and its also outside of the domain knowledge of the entire developing team, proving an interesting challenge, as well as a learning oportunity. Aside from the learning aspect, assisted driving is still considered a relevant engineering problem.
+### Why did we make it?
+A safer driving environment is something we think everyone wants to achieve and according to our development team assisted driving is a step forward in achieving this. When developing this product we aimed to showcase the benefits of assisted driving features to raise awareness of the possibilities that exist in terms of improving safety in traffic.
 
 
 ### What problem does it solve?
-Obstacle collision and cliff avoidance, In order to facilitate and make significantly safer to travel.
+It is our belief that human error is the biggest causation of accidents on the road, where the majority of small accidents occur in a city environment. Our goal is to support the driver with sensors that are able to see things in real time and make inputs on the car according to the data which it acquires. Along with this we have implemented the ability to have the car turn its wheels in different directions to allow the car to turn in its current position which is useful for tight corners and common maneuvers such as pocket parking.
 
-### How you are going to make it?
-In order to develop and test we are mostly going to use the emulator SMCE-Godot, in order to have a suitable environment and perform testing we are going to make complex obstacle courses using the software engine Godot. As a possible extra deliverable we plan to study our software solution applied to a real car we also plan to make a 3d model of a car, which is to be developed using 3d modeling software. In addition and with the aim of creating a truly embedded system we also plan to develop a phone application to control the car.
+### How did we make it?
+We adapted an agile working method by holding weekly team meetings where we split up the tasks amongst our members to be completed within a specified amount of time. In addition to this we have had weekly meetings with our TAs to receive feedback and suggestions on our development process.
 
-### What kind of technology you are going to use?
+The logic of the car was developed in Arduino with C++ and the android application was developed using java in Android studio. The android application communicates with the car in the emulator through a mosquitto broker where the app sends the input to the broker and the car emulator receives it. The maps have been developed in Godot and Autodesk maya. 
+
+### Installation guide
+Under construction
+
+### Demo video
+Under construction
+
+### Software architecture
+To showcase how the android application commuinicates with the SMCE emulator we have created the following sequence diagram:
+![image](https://user-images.githubusercontent.com/90379630/170242207-ff3f8cec-a240-4c39-a198-9a2281c509ad.png)
+
+The sequence diagram shows how the application behaves when the user starts the application. So firstly the user loads the sketch in SMCE Godot and starts the android application, then the android application and SMCE Godot attempts to connect to the Mosquitto broker until it receives a message which says that the connection is established. 
+
+### What kind of technology have we used?
 **Runtime environment:** SMCE-Godot, Pixel 2 API 29 (Android 10).
 
-**Map development:** Autodesk Maya, Blender and/or Godot.
+**Map development:** Autodesk Maya and Godot.
 
 **Car logic development language:** Arduino and C++.
-
-**Car model-sculpting:** Blender, Maya or Godot.
 
 **GUI development language:** Android Studio + Java.
