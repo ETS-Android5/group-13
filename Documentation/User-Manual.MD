@@ -41,7 +41,7 @@ When opened, the application should look as the following Image:
 - User gets stuck between obstacles
 - User presses **Find Left Path**
 - Car rotates left until no obstacles are detected
->**Note**: due to limitations on the range of the infrared sensors, this functionality only works when a frontal obstacle is detected within 25 centimetres, or 25 in game units
+>**Note**: due to limitations on the range of the infrared sensors, this functionality only works when a frontal obstacle is detected within 40 centimetres, or 40 in game units
 
 ### CRUISE CONTROL
 - When pressed, this button will request the car to maintain its speed until new instructions are sent with either the joystick or the buttons.
