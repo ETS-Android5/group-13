@@ -78,7 +78,7 @@ This functionality can be found in the [Arduino Sketch](https://github.com/DIT11
 
 ### [Cliff avoidance](https://github.com/DIT113-V22/group-13/wiki/Feature-7:-Cliff-avoidance) works in the following way:
 - User drives in the direction of a steep decline
-- Angled sensors detect obstacle
+- Angled sensors detect steep decline
 - Software impedes the movement of the car in said direction
  >**optional step:** despite having the motors blocked, the car can still perform "in place" rotation, "FIND LEFT PATH" or "FIND RIGHT PATH"
 
