@@ -31,3 +31,17 @@ jobs:
         run: |
           cd CarControl
           ./gradlew test --info
+  run-instrumented-tests:
+    runs-on: macos-latest
+    steps:
+    - name: Set up JDK 1.11
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.11
+    - name: Clone Repo
+      uses: actions/checkout@v2
+    - name: Run instrumented tests for application
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 29
+        script: cd CarControl && ./gradlew connectedAndroidTest
