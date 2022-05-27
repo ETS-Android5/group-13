@@ -25,6 +25,9 @@ The logic of the car was developed in Arduino with C++ and the android applicati
 ### Installation guide
 Under construction
 
+### User manual
+[Click here to go to the user manual](https://www.google.com](https://github.com/DIT113-V22/group-13/wiki/User-Manual)
+
 ### Demo video
 Under construction
 
