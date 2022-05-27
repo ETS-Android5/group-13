@@ -9,16 +9,16 @@ The following document includes instructions on how to make use of the software 
 - **Modifications Folder**: Contains all files used for 3D modelling for the **MQTT_Joystick_Car** sketch and the map based on **[Inom Vallgraven](https://www.google.com/maps/place/Inom+Vallgraven,+Gotemburgo/@57.7039778,11.9514769,14z/data=!4m5!3m4!1s0x464ff368a2410f03:0x71b0c1e1cef80fe1!8m2!3d57.7022551!4d11.9615896)** in the form of a PCK file
 
 ## Requirements to run the application
-- [Installation Guide](https://github.com/DIT113-V22/group-13) should be completed
+- [Installation Guide](https://github.com/DIT113-V22/group-13/blob/master/Documentation/InstallationGuide.MD) should be completed
 - Device should allow for the use of local host.
 - Both the emulator and Car control application should connect to the same local host.
 
 ## [Application](https://github.com/DIT113-V22/group-13/wiki/Feature-2:-Graphical-user-interface)
 
-Once and only once the steps in the [Installation Guide](https://github.com/DIT113-V22/group-13) are completed, the user may run the application.
+Once and only once the steps in the [Installation Guide](https://github.com/DIT113-V22/group-13/blob/master/Documentation/InstallationGuide.MD) are completed, the user may run the application.
 When opened, the application should look as the following Image:
 
-![alt text](https://github.com/DIT113-V22/group-13/blob/78-user-manual/Documentation/images/Application.png)
+![alt text](https://github.com/DIT113-V22/group-13/blob/master/Documentation/images/Application.png)
 
 
 
@@ -55,7 +55,7 @@ When opened, the application should look as the following Image:
 
  ## Testing enviroment
  To get a better understanding of the different uses that this software offers, we developed a testing environment based on the neighbourhood of Gothenburg called **[Inom Vallgraven](https://www.google.com/maps/place/Inom+Vallgraven,+Gotemburgo/@57.7039778,11.9514769,14z/data=!4m5!3m4!1s0x464ff368a2410f03:0x71b0c1e1cef80fe1!8m2!3d57.7022551!4d11.9615896)** . When installed using the [Installation Guide](https://github.com/DIT113-V22/group-13), the user can freely roam around the map, and test the assisted driving functionality in real life setting with moving obstacles
-  ![alt text](https://github.com/DIT113-V22/group-13/blob/78-user-manual/Documentation/images/Map.png)
+  ![alt text](https://github.com/DIT113-V22/group-13/blob/master/Documentation/images/Map.png)
 
 ## Sensors
 In order to develop the assisted driving features, the **MQTT_Joystick_Car** includes **GP2D120 Infrared Sensors** that are distributed all around the car, with some of them pointing straight and the rest pointing to the surface around the vehicle. 
