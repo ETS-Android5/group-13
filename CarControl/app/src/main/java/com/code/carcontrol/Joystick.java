@@ -110,15 +110,20 @@ public class Joystick {
      * method to divide speed in right motor and left motor, and publish messages on MQTT
      */
     public void getSideSpeeds(){
-        double innerCirclerPositionX = (int) (outerCircleCenterPositionX + actuatorX*outerCircleRadius);
-        double distanceX =  550 -innerCirclerPositionX;
+        double innerCirclePositionX = getInnerX();
+        double innerCirclePositionY = (int) (outerCircleCenterPositionY + actuatorY*outerCircleRadius);
+        double distanceX =  550 -innerCirclePositionX;
         double speed = this.getSpeed();
         double LeftSpeed = speed - speed * (distanceX/150);
         double RightSpeed = speed + speed * (distanceX/150);
+        double requiredChange = 10;
 
-        mMqttClient.publish("DIT133Group13/LeftSpeed", Double.toString(LeftSpeed), 1, null);
-        mMqttClient.publish("DIT133Group13/RightSpeed", Double.toString(RightSpeed), 1, null);
 
+        if ((Math.abs(innerCirclePositionX-lastSentPositionX) > requiredChange) || (Math.abs(innerCirclePositionY-lastSentPositionY) > requiredChange)) {
+            mMqttClient.publish("DIT133Group13/Speed", Double.toString(LeftSpeed) + "/" +  Double.toString(RightSpeed), 1, null);
+            lastSentPositionX = innerCirclePositionX;
+            lastSentPositionY = innerCirclePositionY;
+        }
     }
 
     /**
