@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean cruiseControlToggled = false;
 
 
-
     //creates the surface, client connection, window and sets the content on screen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         //setContentView(new Game(this)); old game joystick only
 
         connectToMqttBroker();
+
         rotateLeft = (Button)findViewById(R.id.ROTATE_LEFT);
         rotateRight = (Button)findViewById(R.id.ROTATE_RIGHT);
         findLeftPath = (Button)findViewById(R.id.FindLeftPath);
@@ -167,11 +167,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public Context getContext(){
+        return this;
+    }
+
     /**
      * Method to connect to the MQTT broker
      */
 
-    private void connectToMqttBroker() {
+    public void connectToMqttBroker() {
         if (!isConnected) {
             mMqttClient.connect(TAG, "", new IMqttActionListener() {
                 /**
@@ -185,7 +189,6 @@ public class MainActivity extends AppCompatActivity {
                     final String successfulConnection = "Connected to MQTT broker";
                     Log.i(TAG, successfulConnection);
                     Toast.makeText(getApplicationContext(), successfulConnection, Toast.LENGTH_SHORT).show();
-
                     //mMqttClient.subscribe("/smartcar/ultrasound/front", QOS, null);
                     //mMqttClient.subscribe("/smartcar/camera", QOS, null);
                 }

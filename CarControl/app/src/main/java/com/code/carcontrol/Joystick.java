@@ -31,12 +31,18 @@ public class Joystick {
     private double actuatorY;
 
     /**
+     * variable to keep track of joystick for unit testing
+     */
+    public static double lastCoordinateX;
+    public static double lastCoordinateY;
+
+    /**
      * constructor with joystick coordinates
      * it initializes the coordinates of the outer, inmovable circle
      * and the inner, interactive circle that make up the joystick
      * The other lines of code are used to set the color for the joystick circles
      */
-    public Joystick(int centerPositionX, int centerPositionY, int outerCircleRadius, int innerCircleRadius) {
+    public Joystick(int centerPositionX, int centerPositionY, int outerCircleRadius, int innerCircleRadius, boolean test) {
 
         // Outer and inner circle make up the joystick
         outerCircleCenterPositionX = centerPositionX;
@@ -47,17 +53,18 @@ public class Joystick {
         // Radii of circles
         this.outerCircleRadius = outerCircleRadius;
         this.innerCircleRadius = innerCircleRadius;
+        if (!test){
+            // paint of circles
+            outerCirclePaint = new Paint();
+            //outerCirclePaint.setColor(Color.GRAY);
+            outerCirclePaint.setColor(Color.rgb(100, 100, 100));
+            outerCirclePaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
-        // paint of circles
-        outerCirclePaint = new Paint();
-        //outerCirclePaint.setColor(Color.GRAY);
-        outerCirclePaint.setColor(Color.rgb(100, 100, 100));
-        outerCirclePaint.setStyle(Paint.Style.FILL_AND_STROKE);
-
-        innerCirclePaint = new Paint();
-        //innerCirclePaint.setColor(Color.BLUE);
-        innerCirclePaint.setColor(Color.rgb(200, 200, 200));
-        innerCirclePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+            innerCirclePaint = new Paint();
+            //innerCirclePaint.setColor(Color.BLUE);
+            innerCirclePaint.setColor(Color.rgb(200, 200, 200));
+            innerCirclePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        }
     }
 
     /**
@@ -170,10 +177,15 @@ public class Joystick {
      * @param touchPositionX is the Y coordinate on screen of the joystick when dragged by a user
      * @param touchPositionY is the X coordinate on screen of the joystick when dragged by a user
      */
-    public void setActuator(double touchPositionX, double touchPositionY) {
+    public double[] setActuator(double touchPositionX, double touchPositionY) {
         double deltaX = touchPositionX - outerCircleCenterPositionX;
         double deltaY = touchPositionY - outerCircleCenterPositionY;
         double deltaDistance = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+        double[] coordinates;
+        coordinates = new double[2];
+        coordinates[0] = touchPositionX;
+        coordinates[1] = touchPositionY;
+
         if(deltaDistance < outerCircleRadius) {
             actuatorX = deltaX/outerCircleRadius;
             actuatorY = deltaY/outerCircleRadius;
@@ -185,6 +197,7 @@ public class Joystick {
             actuatorX = deltaX / 2 / deltaDistance;
             actuatorY = deltaY / 2 / deltaDistance;
         }
+        return coordinates;
     }
     //method to determine if joystick is being pressed
 
