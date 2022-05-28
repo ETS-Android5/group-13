@@ -232,13 +232,6 @@ void stillStandingRotation(String direction, int toggle) {
 }
 
 /**
-   Turns cruisecontrol on or off.
-*/
-void toggleCruiseControl() {
-  cruiseControl = !cruiseControl;
-}
-
-/**
    This keeps rotations going as long as required without multi-threading
    It will also contain code for maintinging speed when cruisecontorl is activated.
 */
@@ -246,9 +239,7 @@ void toggleCruiseControl() {
 void maintainSpeed() {
   if(rotateCar) {
     car.overrideMotorSpeed(lmSpeed, rmSpeed);
-  } else if(cruiseControl) {
-    // Code here
-  }
+  } 
 }
 
 void findPath(String Side){
@@ -284,8 +275,8 @@ void setup() {
   Serial.println("Connecting to WiFi...");
   auto wifiStatus = WiFi.status();
   while (wifiStatus != WL_CONNECTED && wifiStatus != WL_NO_SHIELD) {
-    Serial.println(wifiStatus);
-    Serial.print(".");
+    //Serial.println(wifiStatus);
+    //Serial.print(".");
     delay(1000);
     wifiStatus = WiFi.status();
   }
@@ -296,10 +287,10 @@ void setup() {
     //Serial.print(".");
     delay(1000);
   }
-  Serial.print("wifi status: ");
+  //Serial.print("wifi status: ");
   //print wifi status in the serial, number 3 indicates a succesful connection
-  Serial.print(wifiStatus);
-  Serial.println(" ");
+  //Serial.print(wifiStatus);
+  //Serial.println(" ");
   mqtt.subscribe("DIT133Group13/#", 1);
 
 
