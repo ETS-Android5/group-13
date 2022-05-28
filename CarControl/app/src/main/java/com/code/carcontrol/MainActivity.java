@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private static final String TAG = "SmartcarMqttController";
     private static final String LOCAL_MQTT_BROKER = "10.0.2.2";
+
     private static final String PORT = ":1883";
     private static final String MQTT_SERVER = ("tcp://" + LOCAL_MQTT_BROKER + PORT);
     /*

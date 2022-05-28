@@ -38,8 +38,7 @@ const auto BACK_STRAIGHT_OUTER_RIGHT_IR_PIN = 57;
 const auto BACK_STRAIGHT_INNER_RIGHT_IR_PIN = 58;
 
 // Topic keywords
-const String leftMotorSpeed = "DIT133Group13/LeftSpeed";
-const String rightMotorSpeed = "DIT133Group13/RightSpeed";
+const String motorSpeed = "DIT133Group13/Speed";
 const String keepSpeed = "DIT133Group13/CruiseControl";
 const String rotateLeft = "DIT133Group13/RotateLeft";
 const String rotateRight = "DIT133Group13/RotateRight";
@@ -99,15 +98,8 @@ int rmSpeed = 0; // Current right motorspeed
 
 
 //Define MQTT Broker
-#ifdef __SMCE__
-const auto mqttBrokerUrl = "broker.emqx.io";
-#else
-const auto mqttBrokerUrl = "Bobman.free.mqttserver.eu";
-#endif
+const auto mqttBrokerUrl = "127.0.0.1";
 const auto maxDistance = 400;
-
-// For camera?
-std::vector<char> frameBuffer;
 
 
 
@@ -116,11 +108,6 @@ void loop() {
   // put your main code here, to run repeatedly:
   if (mqtt.connected()) {
     mqtt.loop();
-  }
-
-  if (!mqtt.connected()) {
-    mqtt.connect("arduino", "public", "public");
-    mqtt.subscribe("DIT133Group13/#", 1);
   }
   // Verify cars surroundings
   checkSensors();
@@ -140,7 +127,7 @@ void loop() {
 
 void checkSensors() {
   // Front and Back sensor check
-  collisionDetection();
+  objectDetection();
   cliffDetection();
   //Serial.println(lmSpeed);
   //Serial.println(rmSpeed);
@@ -152,19 +139,19 @@ void checkSensors() {
    */
    if(!rotateCar)  {
     if (lmSpeed+rmSpeed > 0 && blockForward) {         // If car is moving forward && path is blocked or cliff
-      Serial.println("BLOCKING FORWARD: straightForwardIR or frontIR");
+      //Serial.println("BLOCKING FORWARD: straightForwardIR or frontIR");
       car.setSpeed(0);
     } else if (lmSpeed+rmSpeed < 0 && blockReverse) {  // if car is moving backwards and path is blocked or cliff
-      Serial.println("BLOCKING REVERSE: straightBackIR or backIR");
+      //Serial.println("BLOCKING REVERSE: straightBackIR or backIR");
       car.setSpeed(0);
     } else if (((cliffFrontLeft != cliffFrontRight) && (rmSpeed > 0 && cliffFrontLeft)) || (cliffBackLeft != cliffBackRight && (rmSpeed < 0 && cliffBackLeft))) { // Turns right car to avoid cliff
       rightMotor.setSpeed(0);
       lmSpeed /= 4;
-      Serial.println("FORCING RIGHT TURN: CliffFrontLeft or cliffBackLeft");
+      //Serial.println("FORCING RIGHT TURN: CliffFrontLeft or cliffBackLeft");
     } else if (((cliffFrontLeft != cliffFrontRight) && (lmSpeed > 0 && cliffFrontRight)) || (cliffBackLeft != cliffBackRight && (lmSpeed < 0 && cliffBackRight))) { // Turns car left to avoid cliff
       leftMotor.setSpeed(0);
       rmSpeed /= 4;
-      Serial.println("FORCING LEFT TURN: cliffFrontRight or cliffBackRight");
+      //Serial.println("FORCING LEFT TURN: cliffFrontRight or cliffBackRight");
     }
    }
 }
@@ -172,16 +159,15 @@ void checkSensors() {
 /**
  * This checks if there's an obstacle infront or behind the car.
  */
-void collisionDetection() {
-  int minDistance = 20;
-  int maxDistance = 40;
-  int carSpeed = car.getSpeed() * 3.6;
-  int frontSensor = frontStraightIR.getDistance();
-  int backSensor = backStraightIR.getDistance();
+void objectDetection() {
+  int minDistance = 1;
   
   // Checks if direction
-  blockForward    = (frontSensor > minDistance && frontSensor < maxDistance);
-  blockReverse    = (backSensor > minDistance && backSensor < maxDistance);
+  blockForward = frontStraightIR.getDistance() || frontStraightInnerLeftIR.getDistance() || frontStraightOuterLeftIR.getDistance() || 
+                 frontStraightInnerRightIR.getDistance() || frontStraightOuterRightIR.getDistance() > minDistance;
+  blockReverse = backStraightIR.getDistance() || backStraightInnerLeftIR.getDistance() || backStraightOuterLeftIR.getDistance() || 
+                 backStraightInnerRightIR.getDistance() || backStraightOuterRightIR.getDistance() > minDistance;
+                 Serial.println(blockForward);  
 }
 
 /**
@@ -204,20 +190,25 @@ void collisionDetection() {
    @PARAM motor - Information about which motor's speed we're changing
    @PARAM newSpeed - The speed that will be set on the motor.
 */
-void setSpeed(String motor, int newSpeed) {
+
+
+
+void setMotorSpeed(String message) {
+
+  String slash = "/";
+  int slashIndex = message.indexOf(slash);
+  int leftSpeed = (message.substring(0, slashIndex -1)).toInt();
+  int rightSpeed = (message.substring(slashIndex +1, message.length()-1)).toInt();
+  double directionOfTravel = leftSpeed + rightSpeed;
+  
   lmSpeed = rmSpeed = 0;
+  
   rotateCar = false;
-  // changing left motor speed and direction of movement is NOT blocked by sensors:
-  if (motor == leftMotorSpeed && ((newSpeed > 0 && !blockForward) || (newSpeed < 0 && !blockReverse) || newSpeed == 0)) {
-    leftMotor.setSpeed(newSpeed);
-    lmSpeed = newSpeed;
-    // changing right motor speed and direction of movement is NOT blocked by sensors:
-  } else if (motor == rightMotorSpeed && ((newSpeed > 0 && !blockForward) || (newSpeed < 0 && !blockReverse) || newSpeed == 0)) {
-    rightMotor.setSpeed(newSpeed);
-    rmSpeed = newSpeed;
-  } else {
-    //leftMotor.setSpeed(0);
-    //rightMotor.setSpeed(0);
+  if ((directionOfTravel > 0 && !blockForward) || (directionOfTravel < 0 && !blockReverse) || directionOfTravel == 0) {
+    leftMotor.setSpeed(leftSpeed);
+    rightMotor.setSpeed(rightSpeed);
+    lmSpeed = leftSpeed;  
+    rmSpeed = rightSpeed;  
   }
 }
 
@@ -276,7 +267,7 @@ void findPath(String Side){
     delay(550);
     leftMotor.setSpeed(0);
     rightMotor.setSpeed(0);
-    Serial.println("path found");
+    //Serial.println("path found");
     
 }
 
@@ -284,10 +275,7 @@ void findPath(String Side){
 void setup() {
   Serial.begin(9600);
   blockForward = blockReverse = false;
-#ifdef __SMCE__
-  Camera.begin(QVGA, RGB888, 15);
-  frameBuffer.resize(Camera.width() * Camera.height() * Camera.bytesPerPixel());
-#endif
+
 
   WiFi.begin(ssid, pass);
   mqtt.begin(mqttBrokerUrl, 1883, net);
@@ -305,7 +293,7 @@ void setup() {
   //MQTT Broker connection while loop
   Serial.println("Connecting to MQTT broker");
   while (!mqtt.connect("arduino", "public", "public")) {
-    Serial.print(".");
+    //Serial.print(".");
     delay(1000);
   }
   Serial.print("wifi status: ");
@@ -325,14 +313,14 @@ void setup() {
 
     // If the topic sent is regarding motor-speed and the car is not currently rotating.
     // The rotationcheck is added since we're constantly sending the car's speed, even if it is 0.
-    if (!rotateCar && (topic == leftMotorSpeed || topic == rightMotorSpeed)) {
-      setSpeed(topic, message.toInt());
+    if (!rotateCar && topic == motorSpeed) {
+      setMotorSpeed(message);
     } else if (topic == keepSpeed) { // If message is togggling cruisecontrol
       toggleCruiseControl();
     } else if (topic == rotateLeft || topic == rotateRight) { // If message is toggling rotations
       stillStandingRotation(topic, message.toInt());
     } else if (topic == FindLeft || topic == FindRight){
-      Serial.println("finding path");
+      //Serial.println("finding path");
       findPath(topic);
       }
   });
