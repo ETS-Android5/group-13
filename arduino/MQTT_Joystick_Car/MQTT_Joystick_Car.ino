@@ -290,7 +290,7 @@ void setup() {
   //Serial.print("wifi status: ");
   //print wifi status in the serial, number 3 indicates a succesful connection
   //Serial.print(wifiStatus);
-  //Serial.println(" ");
+  //tSerial.println(" ");
   mqtt.subscribe("DIT133Group13/#", 1);
 
 
@@ -306,8 +306,6 @@ void setup() {
     // The rotationcheck is added since we're constantly sending the car's speed, even if it is 0.
     if (!rotateCar && topic == motorSpeed) {
       setMotorSpeed(message);
-    } else if (topic == keepSpeed) { // If message is togggling cruisecontrol
-      toggleCruiseControl();
     } else if (topic == rotateLeft || topic == rotateRight) { // If message is toggling rotations
       stillStandingRotation(topic, message.toInt());
     } else if (topic == FindLeft || topic == FindRight){
