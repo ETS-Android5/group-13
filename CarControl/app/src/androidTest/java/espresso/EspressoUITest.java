@@ -7,14 +7,11 @@ import static androidx.test.espresso.matcher.ViewMatchers.*;
 import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyLeftOf;
 import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyRightOf;
 
-import static org.junit.Assert.assertEquals;
-
-import androidx.test.espresso.ViewAction;
-import androidx.test.espresso.action.ViewActions;
-import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.filters.SmallTest;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,14 +22,14 @@ import com.code.carcontrol.MainActivity;
 
 
 @RunWith(AndroidJUnit4.class)
-@LargeTest
+@SmallTest
 public class EspressoUITest{
     @Rule
     public ActivityScenarioRule<MainActivity> activityRule =
             new ActivityScenarioRule<MainActivity>(MainActivity.class);
 
     @Test
-    public void TestUIelements(){
+    public void TestUIelements() throws Exception{
         /**
          *The purpose of this test is to ensure the display, positioning and alignment of elements
          * on screen by making use of espresso instrumented testing
