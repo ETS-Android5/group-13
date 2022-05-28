@@ -14,6 +14,7 @@ extents = Vector3( 0.65013, 0.215063, 0.835885 )
 extents = Vector3( 1.90874, 0.215063, 0.486514 )
 
 [node name="TemplateCar" instance=ExtResource( 1 )]
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1.72607, 0 )
 cosmetic_wheels = [ NodePath("LeftBack/wheel"), NodePath("LeftFront/wheel"), NodePath("RightBack/wheel"), NodePath("RightFront/wheel") ]
 
 [node name="Hull" parent="." index="0" instance=ExtResource( 2 )]
