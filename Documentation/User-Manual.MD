@@ -43,9 +43,6 @@ When opened, the application should look as the following Image:
 - Car rotates left until no obstacles are detected
 >**Note**: due to limitations on the range of the infrared sensors, this functionality only works when a frontal obstacle is detected within 40 centimetres, or 40 in game units
 
-### CRUISE CONTROL
-- When pressed, this button will request the car to maintain its speed until new instructions are sent with either the joystick or the buttons.
-
 ### SPEEDOMETER 
 - As the name indicates, this textfield will provide the user with real time information on the speed of the car.
 
