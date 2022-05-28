@@ -5,9 +5,7 @@ import static com.code.carcontrol.MainActivity.mMqttClient;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.GradientDrawable;
 
-import java.sql.SQLOutput;
 
 /** Explain more how this class works, how it is used and why it's used.
  This class includes features and methods of joystick.
@@ -69,6 +67,7 @@ public class Joystick {
      * to the displacement
      */
 
+
     /*  Even though the driver's joystick is located at a point which is slightly off from the upper Y-axis,
     we still can figure out that the driver's intention was to move the car move straight forward.
     To enable this, we divided the joystick to have 16 sections. Each section has a degree of (360/16),
@@ -76,6 +75,7 @@ public class Joystick {
     would be the same, adjusting the drivers movement to the central line of each section.
     Basic trigonometry was used to figure out the coordinates of section borders and the central lines.
     The code repetition is remained on purpose as it provides better understanding from a reader's perspective.*/
+
 
     public double getInnerX() {
         innerCircleCenterPositionX = (int) (outerCircleCenterPositionX + actuatorX * outerCircleRadius);
@@ -100,6 +100,8 @@ public class Joystick {
         double distanceY = 500 - innerCirclePositionY;
         double speed = distanceY / 150.00;
         speed *= 50;
+        Game.speed = speed;
+
         return speed;
 
     }
