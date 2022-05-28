@@ -41,7 +41,6 @@ public class EspressoUITest{
         onView(withText("ROTATE RIGHT")).check(matches(isDisplayed()));
         onView(withText("FIND LEFT PATH")).check(matches(isDisplayed()));
         onView(withText("FIND RIGHT PATH")).check(matches(isDisplayed()));
-        onView(withText("CRUISE CONTROL")).check(matches(isDisplayed()));
 
         onView(withText("ROTATE LEFT")).check(isCompletelyLeftOf(withId(R.id.ROTATE_RIGHT)));
         onView(withText("FIND LEFT PATH")).check(isCompletelyLeftOf(withId(R.id.FindRightPath)));
