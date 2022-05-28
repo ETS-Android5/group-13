@@ -3,8 +3,6 @@ package com.code.carcontrol;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -12,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -20,6 +19,7 @@ import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+
 /**
  * this class sets up the necessary components and runs the application when they are ready
  */
@@ -29,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
         The following attributes are used for the MQTT connection
      */
     private static final String TAG = "SmartcarMqttController";
-    private static final String EXTERNAL_MQTT_BROKER = "broker.emqx.io";
+    private static final String LOCAL_MQTT_BROKER = "10.0.2.2";
     private static final String PORT = ":1883";
-    private static final String MQTT_SERVER = ("tcp://" + EXTERNAL_MQTT_BROKER + PORT);
+    private static final String MQTT_SERVER = ("tcp://" + LOCAL_MQTT_BROKER + PORT);
     /*
         The following attributes are used for the broadcast on screen of the car's camera view
      */
@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     Button cruiseControl;
     Button findLeftPath;
     Button findRightPath;
+    public static TextView speedometer;
+
 
     private boolean rotatingRight = false;
     private boolean rotatingLeft  = false;
@@ -87,9 +89,9 @@ public class MainActivity extends AppCompatActivity {
 
         rotateLeft = (Button)findViewById(R.id.ROTATE_LEFT);
         rotateRight = (Button)findViewById(R.id.ROTATE_RIGHT);
-        cruiseControl = (Button)findViewById(R.id.CRUISE_CONTROL);
         findLeftPath = (Button)findViewById(R.id.FindLeftPath);
         findRightPath = (Button)findViewById(R.id.FindRightPath);
+
 
         rotateLeft.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -99,9 +101,7 @@ public class MainActivity extends AppCompatActivity {
                     rotatingLeft = true;
                     rotatingRight = false;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    for(int i = 0; i < 10; i++) {
-                        mMqttClient.publish("DIT133Group13/RotateLeft", "0", 1, null);
-                    }
+                    mMqttClient.publish("DIT133Group13/RotateLeft", "0", 1, null);
                     rotatingRight = rotatingLeft = false;
                 }
                 return false;
@@ -116,9 +116,7 @@ public class MainActivity extends AppCompatActivity {
                     rotatingRight = true;
                     rotatingLeft = false;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    for(int i = 0; i < 10; i++) {
-                        mMqttClient.publish("DIT133Group13/RotateRight", "0", 1, null);
-                    }
+                    mMqttClient.publish("DIT133Group13/RotateRight", "0", 1, null);
                     rotatingRight = rotatingLeft = false;
                 }
 
@@ -126,19 +124,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        cruiseControl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cruiseControlToggled = !cruiseControlToggled;
-                if (cruiseControlToggled) {
-                    cruiseControl.setTextColor(Color.rgb(29,75,29));
-                    mMqttClient.publish("DIT133Group13/CruiseControl", "1", 1,null);
-                } else {
-                    cruiseControl.setTextColor(Color.rgb(75,29,29));
-                    mMqttClient.publish("DIT133Group13/CruiseControl", "0", 1,null);
-                }
-            }
-        });
         findLeftPath.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -234,28 +219,10 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 /**
-                 * Sub-Method without current use that allows the application to recieve the broadcasting
-                 * of the car's camera view.
+                 * Sub-Method not in use but needs to be overridden
                  */
                 @Override
-                public void messageArrived(String topic, MqttMessage message) throws Exception {
-                    if (topic.equals("/smartcar/camera")) {
-                        final Bitmap bm = Bitmap.createBitmap(IMAGE_WIDTH, IMAGE_HEIGHT, Bitmap.Config.ARGB_8888);
-
-                        final byte[] payload = message.getPayload();
-                        final int[] colors = new int[IMAGE_WIDTH * IMAGE_HEIGHT];
-                        for (int ci = 0; ci < colors.length; ++ci) {
-                            final byte r = payload[3 * ci];
-                            final byte g = payload[3 * ci + 1];
-                            final byte b = payload[3 * ci + 2];
-                            colors[ci] = Color.rgb(r, g, b);
-                        }
-                        bm.setPixels(colors, 0, IMAGE_WIDTH, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
-
-                    } else {
-                        Log.i(TAG, "[MQTT] Topic: " + topic + " | Message: " + message.toString());
-                    }
-                }
+                public void messageArrived(String topic, MqttMessage message) throws Exception {}
 
                 /**
                  * Sub-Method to indicate the successful delivery of a message

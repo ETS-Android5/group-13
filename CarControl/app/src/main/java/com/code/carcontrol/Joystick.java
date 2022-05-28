@@ -5,20 +5,20 @@ import static com.code.carcontrol.MainActivity.mMqttClient;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.GradientDrawable;
 
-import java.sql.SQLOutput;
 
 /** Explain more how this class works, how it is used and why it's used.
-This class includes features and methods of joystick.
+ This class includes features and methods of joystick.
 
-*/
+ */
 public class Joystick {
 
     private int outerCircleCenterPositionX;
     private int outerCircleCenterPositionY;
     private int innerCircleCenterPositionX;
     private int innerCircleCenterPositionY;
+    private double lastSentPositionX = 550;
+    private double lastSentPositionY = 500;
 
     private int outerCircleRadius;
     private int innerCircleRadius;
@@ -73,27 +73,66 @@ public class Joystick {
      * by 300 units, which is the maximum displacement and multiply by the top speed to get it proportional
      * to the displacement
      */
+
+
+    /*  Even though the driver's joystick is located at a point which is slightly off from the upper Y-axis,
+    we still can figure out that the driver's intention was to move the car move straight forward.
+    To enable this, we divided the joystick to have 16 sections. Each section has a degree of (360/16),
+    and as long as the driver moves the joystick within the same area, the movement in the code
+    would be the same, adjusting the drivers movement to the central line of each section.
+    Basic trigonometry was used to figure out the coordinates of section borders and the central lines.
+    The code repetition is remained on purpose as it provides better understanding from a reader's perspective.*/
+
+
+    public double getInnerX() {
+        innerCircleCenterPositionX = (int) (outerCircleCenterPositionX + actuatorX * outerCircleRadius);
+        innerCircleCenterPositionY = (int) (outerCircleCenterPositionY + actuatorY * outerCircleRadius);
+
+        double xDistanceFromCenter = Math.abs(550 - innerCircleCenterPositionX);
+        double yDistanceFromCenter = Math.abs(500 - innerCircleCenterPositionY);
+        double tangent = yDistanceFromCenter / xDistanceFromCenter;
+        double newInnerCirclePositionX = 550;
+
+        if (tangent > Math.tan(1.3744)) { //78.75
+            newInnerCirclePositionX = 550.0;
+        } else {
+            newInnerCirclePositionX = innerCircleCenterPositionX;
+        }
+        return newInnerCirclePositionX;
+    }
+
+
     public double getSpeed() {
         double innerCirclePositionY = (int) (outerCircleCenterPositionY + actuatorY*outerCircleRadius);
         double distanceY = 500 - innerCirclePositionY;
         double speed = distanceY / 150.00;
         speed *= 50;
+        Game.speed = speed;
+
         return speed;
+
     }
+
+
 
     /**
      * method to divide speed in right motor and left motor, and publish messages on MQTT
      */
     public void getSideSpeeds(){
-        double innerCirclerPositionX = (int) (outerCircleCenterPositionX + actuatorX*outerCircleRadius);
-        double distanceX =  550 -innerCirclerPositionX;
+        double innerCirclePositionX = getInnerX();
+        double innerCirclePositionY = (int) (outerCircleCenterPositionY + actuatorY*outerCircleRadius);
+        double distanceX =  550 -innerCirclePositionX;
         double speed = this.getSpeed();
         double LeftSpeed = speed - speed * (distanceX/150);
         double RightSpeed = speed + speed * (distanceX/150);
+        double requiredChange = 10;
 
-            mMqttClient.publish("DIT133Group13/LeftSpeed", Double.toString(LeftSpeed), 1, null);
-            mMqttClient.publish("DIT133Group13/RightSpeed", Double.toString(RightSpeed), 1, null);
 
+        if ((Math.abs(innerCirclePositionX-lastSentPositionX) > requiredChange) || (Math.abs(innerCirclePositionY-lastSentPositionY) > requiredChange)) {
+            mMqttClient.publish("DIT133Group13/Speed", Double.toString(LeftSpeed) + "/" +  Double.toString(RightSpeed), 1, null);
+            lastSentPositionX = innerCirclePositionX;
+            lastSentPositionY = innerCirclePositionY;
+        }
     }
 
     /**

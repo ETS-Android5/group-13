@@ -27,6 +27,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private GameLoop gameLoop;
     Context context;
     private final Joystick joystick;
+    public static double speed;
 
 
     public Game(Context context){
@@ -104,28 +105,28 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas){
         super.draw(canvas);
         canvas.drawColor(Color.parseColor("#555555"));
-        drawFPS(canvas);
-        drawUPS(canvas);
+        drawUPSandFPS(canvas);
         joystick.draw(canvas);
+        Paint paint = new Paint();
+        int color = ContextCompat.getColor(context, R.color.white);
+        paint.setColor(color);
+        paint.setTextSize(75);
+        this.speed = speed - (speed % 1);
+        canvas.drawText(this.speed + "KM/H", 710, 125, paint);
     }
-    public void drawUPS(Canvas canvas){
+    public void drawUPSandFPS(Canvas canvas){
         String UPS = Double.toString(gameLoop.getAverageUPS());
         UPS = UPS.substring(0,2);
-        Paint paint = new Paint();
-        int color = ContextCompat.getColor(context, R.color.lightBlack);
-        paint.setColor(color);
-        paint.setTextSize(50);
-        canvas.drawText("UPS: "+ UPS,100,150, paint);
-    }
-    public void drawFPS(Canvas canvas){
         String FPS = Double.toString(gameLoop.getAverageFPS());
         FPS = FPS.substring(0,2);
         Paint paint = new Paint();
-        int color = ContextCompat.getColor(context, R.color.lightBlack);
+        int color = ContextCompat.getColor(context, R.color.white);
         paint.setColor(color);
         paint.setTextSize(50);
+        canvas.drawText("UPS: "+ UPS,100,150, paint);
         canvas.drawText("FPS: "+ FPS,100,95, paint);
     }
+
 
     /**
      * this method is called repeately to update the game state
