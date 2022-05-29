@@ -240,7 +240,7 @@ void findPath(String Side){
         }
     } 
     else if(Side == FindRight){
-      while(frontStraightIR.getDistance() != 0 || frontStraightInnerRightIR.getDistance() != 0 || frontStraightInnerLeftIR.getDistance() != 0){
+      while(frontStraightIR.getDistance() != 0 || frontStraightInnerRightIR.getDistance() != 0 || frontStraightInnerLeftIR.getDistance() != 0 || frontStraightOuterRightIR.getDistance() != 0 || frontStraightOuterLeftIR.getDistance() != 0){
         leftMotor.setSpeed(10);
         rightMotor.setSpeed(-10);
         }
