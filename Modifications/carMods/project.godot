@@ -10,8 +10,9 @@ config_version=4
 
 [application]
 
-config/name="smcegd_mod_example"
+config/name="Snaildrive Cityheist"
 run/main_scene="res://src/environments/example/Spatial.tscn"
+config/icon="res://src/environments/example/snaildrive_round.png"
 
 [physics]
 
