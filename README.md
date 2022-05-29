@@ -57,3 +57,6 @@ We have modified the hardware architecture by editing and adding more sensors to
 **Car logic development language:** Arduino and C++.
 
 **GUI development language:** Android Studio + Java.
+
+### Demo video
+[Click here to check our demo video](https://youtu.be/iNM-pwgYoPQ)
