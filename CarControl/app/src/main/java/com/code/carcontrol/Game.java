@@ -29,7 +29,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private final Joystick joystick;
     public static double speed;
 
-
+    /**
+     * Method that initializes the joystick and the game
+     */
     public Game(Context context){
 
         super(context);
@@ -65,16 +67,19 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event){
         switch (event.getAction()){
+            // Calculating speed when joystick is clicked downwards
             case MotionEvent.ACTION_DOWN:
                 if (joystick.isPressed((double)event.getX(),(double)event.getY())){
                     joystick.setIsPressed(true);
                 }
                 return true;
+            // Calculating speed when joystick is clicked
             case MotionEvent.ACTION_MOVE:
                 if (joystick.getIsPressed()){
                     joystick.setActuator((double)event.getX(),(double)event.getY());
                 }
                 return true;
+            // Calculating speed when joystick is clicked upwards
             case MotionEvent.ACTION_UP:
                 joystick.setIsPressed(false);
                 joystick.resetActuator();
@@ -89,13 +94,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
      */
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height){
-
-    }
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height){}
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder){
-
-    }
+    public void surfaceDestroyed(SurfaceHolder holder){}
 
     /**
      * This three methods draw the joystick, FPS and UPS on the canvas (screen output)

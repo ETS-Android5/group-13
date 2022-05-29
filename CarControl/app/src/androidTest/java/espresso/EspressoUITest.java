@@ -34,7 +34,7 @@ public class EspressoUITest{
          *The purpose of this test is to ensure the display, positioning and alignment of elements
          * on screen by making use of espresso instrumented testing
          */
-        Thread.sleep(5000);
+        Thread.sleep(10000);
         performTest();
 
     }

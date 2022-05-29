@@ -21,47 +21,40 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 /**
- * this class sets up the necessary components and runs the application when they are ready
+ * This class sets up the necessary components and runs the application when they are ready
  */
 
 public class MainActivity extends AppCompatActivity {
-    /*
-        The following attributes are used for the MQTT connection
-     */
+    //The following attributes are used for the MQTT connection
     private static final String TAG = "SmartcarMqttController";
     private static final String LOCAL_MQTT_BROKER = "10.0.2.2";
-
     private static final String PORT = ":1883";
     private static final String MQTT_SERVER = ("tcp://" + LOCAL_MQTT_BROKER + PORT);
-    /*
-        The following attributes are used for the broadcast on screen of the car's camera view
-     */
+
+    //The following attributes are used for the broadcast on screen of the car's camera view
     private static final int QOS = 1;
     private static final int IMAGE_WIDTH = 320;
     private static final int IMAGE_HEIGHT = 240;
 
-    /*
-        The following attributes are used for the publishing of messages and reconnection to the
-        server if needed
-     */
+    //The following attributes are used for the publishing of messages and reconnection to the
+    //server if needed
     public static MqttClient mMqttClient;
     public static boolean isConnected = false;
-
+    // Initializing the buttons and text
     Button rotateLeft;
     Button rotateRight;
-    Button cruiseControl;
     Button findLeftPath;
     Button findRightPath;
     public static TextView speedometer;
 
-
+    // Checking if the buttons are being pressed
     private boolean rotatingRight = false;
     private boolean rotatingLeft  = false;
-    private boolean cruiseControlToggled = false;
 
-
-    //creates the surface, client connection, window and sets the content on screen
     @Override
+    /**
+     * Creates the surface, client connection, window and sets the content on screen
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -92,8 +85,7 @@ public class MainActivity extends AppCompatActivity {
         rotateRight = (Button)findViewById(R.id.ROTATE_RIGHT);
         findLeftPath = (Button)findViewById(R.id.FindLeftPath);
         findRightPath = (Button)findViewById(R.id.FindRightPath);
-
-
+        //These are methods for event handling if the rotateLeft or rotateRight button are being pressed
         rotateLeft.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -182,7 +174,6 @@ public class MainActivity extends AppCompatActivity {
             mMqttClient.connect(TAG, "", new IMqttActionListener() {
                 /**
                  * Sub-Method to communicate via log when a connection is successful
-                 * We include line 128 and 129 in case we want to broadcast the camera in the future
                  */
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
@@ -191,8 +182,6 @@ public class MainActivity extends AppCompatActivity {
                     final String successfulConnection = "Connected to MQTT broker";
                     Log.i(TAG, successfulConnection);
                     Toast.makeText(getApplicationContext(), successfulConnection, Toast.LENGTH_SHORT).show();
-                    //mMqttClient.subscribe("/smartcar/ultrasound/front", QOS, null);
-                    //mMqttClient.subscribe("/smartcar/camera", QOS, null);
                 }
 
                 /**

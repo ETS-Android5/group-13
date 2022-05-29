@@ -6,27 +6,37 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-
-/** Explain more how this class works, how it is used and why it's used.
- This class includes features and methods of joystick.
-
- */
 public class Joystick {
-
+    /**
+     * These are variables to calculate the position of the joystick
+     */
     private int outerCircleCenterPositionX;
     private int outerCircleCenterPositionY;
     private int innerCircleCenterPositionX;
     private int innerCircleCenterPositionY;
     private double lastSentPositionX = 550;
     private double lastSentPositionY = 500;
-
+    /**
+     * These are variables to set the radius of the joystick
+     */
     private int outerCircleRadius;
     private int innerCircleRadius;
-
+    /**
+     * These are variables to choose font and size of text on the joystick
+     */
     private Paint innerCirclePaint;
     private Paint outerCirclePaint;
+    /**
+     * This is a variable to check if the joystick is being pressed down
+     */
     private boolean isPressed = false;
+    /**
+     * This variable is used to calculate the displacement of the joystick
+     */
     private double joystickCenterToTouchDistance;
+    /**
+     * This are variables to keep track of the joysticks movement
+     */
     private double actuatorX;
     private double actuatorY;
 
@@ -50,7 +60,7 @@ public class Joystick {
         innerCircleCenterPositionX = centerPositionX;
         innerCircleCenterPositionY = centerPositionY;
 
-        // Radii of circles
+        // Radius of the circles
         this.outerCircleRadius = outerCircleRadius;
         this.innerCircleRadius = innerCircleRadius;
         if (!test){
@@ -69,20 +79,10 @@ public class Joystick {
 
     /**
      * method to get the displacement of the joystick in the Y axis to determine overall speed
-     * It calculates the displacement on the y axis, substract the initial coordinates, and divide it
+     * It calculates the displacement on the y axis, subtract the initial coordinates, and divide it
      * by 300 units, which is the maximum displacement and multiply by the top speed to get it proportional
      * to the displacement
      */
-
-
-    /*  Even though the driver's joystick is located at a point which is slightly off from the upper Y-axis,
-    we still can figure out that the driver's intention was to move the car move straight forward.
-    To enable this, we divided the joystick to have 16 sections. Each section has a degree of (360/16),
-    and as long as the driver moves the joystick within the same area, the movement in the code
-    would be the same, adjusting the drivers movement to the central line of each section.
-    Basic trigonometry was used to figure out the coordinates of section borders and the central lines.
-    The code repetition is remained on purpose as it provides better understanding from a reader's perspective.*/
-
 
     public double getInnerX() {
         innerCircleCenterPositionX = (int) (outerCircleCenterPositionX + actuatorX * outerCircleRadius);
@@ -92,7 +92,7 @@ public class Joystick {
         double yDistanceFromCenter = Math.abs(500 - innerCircleCenterPositionY);
         double tangent = yDistanceFromCenter / xDistanceFromCenter;
         double newInnerCirclePositionX = 550;
-
+        // This is to keep the car going straight forwards even if the joystick is slightly off center in the y-axis
         if (tangent > Math.tan(1.3744)) { //78.75
             newInnerCirclePositionX = 550.0;
         } else {
@@ -100,7 +100,9 @@ public class Joystick {
         }
         return newInnerCirclePositionX;
     }
-
+    /**
+     * This method is used to get the displacement of the joystick and returns the speed
+     */
 
     public double getSpeed() {
         double innerCirclePositionY = (int) (outerCircleCenterPositionY + actuatorY*outerCircleRadius);
@@ -113,10 +115,8 @@ public class Joystick {
 
     }
 
-
-
     /**
-     * method to divide speed in right motor and left motor, and publish messages on MQTT
+     * Method to divide speed in right motor and left motor, and publish messages on MQTT
      */
     public void getSideSpeeds(){
         double innerCirclePositionX = getInnerX();
@@ -125,9 +125,10 @@ public class Joystick {
         double speed = this.getSpeed();
         double LeftSpeed = speed - speed * (distanceX/150);
         double RightSpeed = speed + speed * (distanceX/150);
+        // This variable is used to not spam the broker with messages that contain too similar information
         double requiredChange = 10;
 
-
+        // This is checking if the current change is greater than the required change to send the message to Mqtt
         if ((Math.abs(innerCirclePositionX-lastSentPositionX) > requiredChange) || (Math.abs(innerCirclePositionY-lastSentPositionY) > requiredChange)) {
             mMqttClient.publish("DIT133Group13/Speed", Double.toString(LeftSpeed) + "/" +  Double.toString(RightSpeed), 1, null);
             lastSentPositionX = innerCirclePositionX;
@@ -136,8 +137,7 @@ public class Joystick {
     }
 
     /**
-     * method to show the joystick on screen
-     * joystick is made up of two circles
+     * Method to show the joystick on screen, the joystick is made up of two circles
      */
     public void draw(Canvas canvas) {
         // Draw outer circle
@@ -170,9 +170,8 @@ public class Joystick {
         innerCircleCenterPositionY = (int) (outerCircleCenterPositionY + actuatorY*outerCircleRadius);
     }
 
-    //method to set joystick actuator
-
     /**
+     * Method to set joystick actuator
      * This method does the mathematical calculations needed to calculate the movement of the joystick
      * @param touchPositionX is the Y coordinate on screen of the joystick when dragged by a user
      * @param touchPositionY is the X coordinate on screen of the joystick when dragged by a user
@@ -185,7 +184,7 @@ public class Joystick {
         coordinates = new double[2];
         coordinates[0] = touchPositionX;
         coordinates[1] = touchPositionY;
-
+        // If-else statement to maintain functionality even if the inner circle is being dragged outside of the outer circle
         if(deltaDistance < outerCircleRadius) {
             actuatorX = deltaX/outerCircleRadius;
             actuatorY = deltaY/outerCircleRadius;
@@ -199,10 +198,9 @@ public class Joystick {
         }
         return coordinates;
     }
-    //method to determine if joystick is being pressed
 
     /**
-     * method that takes in the position of the user click/drag and determines if it is made inside of
+     * Method that takes in the position of the user click/drag and determines if it is made inside of
      * the range of the inner joystick circle, returning true in that case
      */
     public boolean isPressed(double touchPositionX, double touchPositionY) {
@@ -213,6 +211,9 @@ public class Joystick {
         return joystickCenterToTouchDistance < outerCircleRadius;
     }
 
+    /**
+     * Getters and setters for the isPressed method
+     */
     public boolean getIsPressed() {
         return isPressed;
     }
@@ -222,7 +223,7 @@ public class Joystick {
     }
 
     /**
-     * method that resets the joystick position to 0,0 if user input stops
+     * Method that resets the joystick position to 0,0 if user input stops
      */
     public void resetActuator() {
         actuatorX = 0;
