@@ -29,11 +29,18 @@ public class GameLoop extends Thread{
      */
     private boolean isRunning = false;
 
+    /**
+     * This is the constructor for the Gameloop class
+     */
+
     public GameLoop(Game game, SurfaceHolder surfaceHolder) {
         this.game = game;
         this.surfaceHolder = surfaceHolder;
     }
 
+    /**
+     * The two following methods are used to get the average Frames Per Second and Updates Per Second elsewhere in the code.
+     */
     public double getAverageUPS() {
         return averageUPS;
     }
@@ -42,6 +49,10 @@ public class GameLoop extends Thread{
         return averageFPS;
     }
 
+    /**
+     * This methods starts the loop for running the game
+     */
+
     public void startLoop() {
         Log.d("GameLoop.java", "startLoop()");
         isRunning = true;
@@ -49,7 +60,7 @@ public class GameLoop extends Thread{
     }
 
     /**
-     *  method to run the loop, it is optimized to provide 30 FPS and 30 UPS
+     *  Method to run the loop, it is optimized to provide 30 FPS and 30 UPS
      */
 
     @Override
