@@ -102,7 +102,7 @@ const auto mqttBrokerUrl = "127.0.0.1";
 const auto maxDistance = 400;
 
 
-
+//main loop
 void loop() {
 
   // put your main code here, to run repeatedly:
@@ -190,9 +190,6 @@ void objectDetection() {
    @PARAM motor - Information about which motor's speed we're changing
    @PARAM newSpeed - The speed that will be set on the motor.
 */
-
-
-
 void setMotorSpeed(String message) {
 
   String slash = "/";
@@ -233,7 +230,6 @@ void stillStandingRotation(String direction, int toggle) {
 
 /**
    This keeps rotations going as long as required without multi-threading
-   It will also contain code for maintinging speed when cruisecontorl is activated.
 */
 
 void maintainSpeed() {
@@ -241,7 +237,7 @@ void maintainSpeed() {
     car.overrideMotorSpeed(lmSpeed, rmSpeed);
   } 
 }
-
+//Rotates the car until none of the front sensors detect any obstacle
 void findPath(String Side){
     if (Side == FindLeft){
       while(frontStraightIR.getDistance() != 0 || frontStraightInnerRightIR.getDistance() != 0 || frontStraightInnerLeftIR.getDistance() != 0 || frontStraightOuterRightIR.getDistance() != 0 || frontStraightOuterLeftIR.getDistance() != 0){
