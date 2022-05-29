@@ -129,8 +129,7 @@ void checkSensors() {
   // Front and Back sensor check
   objectDetection();
   cliffDetection();
-  //Serial.println(lmSpeed);
-  //Serial.println(rmSpeed);
+  
   /**
    * When the car tries to move towards an obstacle it will be stopped:
    * When the car is about to drive off a cliff it will be stopped
@@ -139,19 +138,16 @@ void checkSensors() {
    */
    if(!rotateCar)  {
     if (lmSpeed+rmSpeed > 0 && blockForward) {         // If car is moving forward && path is blocked or cliff
-      //Serial.println("BLOCKING FORWARD: straightForwardIR or frontIR");
+      
       car.setSpeed(0);
     } else if (lmSpeed+rmSpeed < 0 && blockReverse) {  // if car is moving backwards and path is blocked or cliff
-      //Serial.println("BLOCKING REVERSE: straightBackIR or backIR");
       car.setSpeed(0);
     } else if (((cliffFrontLeft != cliffFrontRight) && (rmSpeed > 0 && cliffFrontLeft)) || (cliffBackLeft != cliffBackRight && (rmSpeed < 0 && cliffBackLeft))) { // Turns right car to avoid cliff
       rightMotor.setSpeed(0);
       lmSpeed /= 4;
-      //Serial.println("FORCING RIGHT TURN: CliffFrontLeft or cliffBackLeft");
     } else if (((cliffFrontLeft != cliffFrontRight) && (lmSpeed > 0 && cliffFrontRight)) || (cliffBackLeft != cliffBackRight && (lmSpeed < 0 && cliffBackRight))) { // Turns car left to avoid cliff
       leftMotor.setSpeed(0);
       rmSpeed /= 4;
-      //Serial.println("FORCING LEFT TURN: cliffFrontRight or cliffBackRight");
     }
    }
 }
@@ -222,8 +218,6 @@ void stillStandingRotation(String direction, int toggle) {
     lmSpeed = 50;
     rmSpeed = -50;
   } else { // Stops rotation.
-    //lmSpeed = 0;
-    //rmSpeed = 0;
     car.overrideMotorSpeed(0, 0);
   }
 }
@@ -254,8 +248,6 @@ void findPath(String Side){
     delay(550);
     leftMotor.setSpeed(0);
     rightMotor.setSpeed(0);
-    //Serial.println("path found");
-    
 }
 
 //method to set up the car, MQTT client, wifi connection and MQTT message handling
@@ -271,8 +263,6 @@ void setup() {
   Serial.println("Connecting to WiFi...");
   auto wifiStatus = WiFi.status();
   while (wifiStatus != WL_CONNECTED && wifiStatus != WL_NO_SHIELD) {
-    //Serial.println(wifiStatus);
-    //Serial.print(".");
     delay(1000);
     wifiStatus = WiFi.status();
   }
@@ -280,13 +270,9 @@ void setup() {
   //MQTT Broker connection while loop
   Serial.println("Connecting to MQTT broker");
   while (!mqtt.connect("arduino", "public", "public")) {
-    //Serial.print(".");
     delay(1000);
   }
-  //Serial.print("wifi status: ");
-  //print wifi status in the serial, number 3 indicates a succesful connection
-  //Serial.print(wifiStatus);
-  //tSerial.println(" ");
+  
   mqtt.subscribe("DIT133Group13/#", 1);
 
 
@@ -299,13 +285,11 @@ void setup() {
   mqtt.onMessage([](String topic, String message) {
 
     // If the topic sent is regarding motor-speed and the car is not currently rotating.
-    // The rotationcheck is added since we're constantly sending the car's speed, even if it is 0.
     if (!rotateCar && topic == motorSpeed) {
       setMotorSpeed(message);
     } else if (topic == rotateLeft || topic == rotateRight) { // If message is toggling rotations
       stillStandingRotation(topic, message.toInt());
     } else if (topic == FindLeft || topic == FindRight){
-      //Serial.println("finding path");
       findPath(topic);
       }
   });
