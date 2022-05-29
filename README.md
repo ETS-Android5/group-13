@@ -31,7 +31,7 @@ The logic of the car was developed in Arduino with C++ and the android applicati
 [Click here to go to the user manual](https://github.com/DIT113-V22/group-13/wiki/User-Manual)
 
 ### Demo video
-Under construction
+[Click here to check our demo video](https://youtu.be/iNM-pwgYoPQ)
 
 ### Software and hardware architecture
 To showcase how the android application commuinicates with the SMCE emulator we have created the following sequence diagram:
@@ -57,6 +57,3 @@ We have modified the hardware architecture by editing and adding more sensors to
 **Car logic development language:** Arduino and C++.
 
 **GUI development language:** Android Studio + Java.
-
-### Demo video
-[Click here to check our demo video](https://youtu.be/iNM-pwgYoPQ)
